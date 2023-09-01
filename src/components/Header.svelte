@@ -14,10 +14,10 @@
 <div class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown">
-      <label tabindex="0" class="btn btn-ghost lg:hidden">
+      <label tabindex="-1" for="pulldown-menu" class="btn btn-ghost lg:hidden">
         <Icons type='menu' />
       </label>
-      <ul tabindex="0" class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+      <ul tabindex="-1" id="pulldown-menu" class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         {#each tabs as tab, i (tab.name)}
           <li>
             <a href={tab.path}>
