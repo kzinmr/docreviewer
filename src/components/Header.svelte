@@ -1,10 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Icons from '$components/Icons.svelte';
-
   $: currentRoute = $page.url.pathname;
-
-  let count = 0;
 </script>
 
 <div class="navbar bg-base-100">

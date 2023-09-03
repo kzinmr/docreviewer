@@ -24,7 +24,7 @@
 					viewport
 				};
 				await page.render(renderContext).promise;
-				const imageURL = canvas.toDataURL('image/png');
+				// const imageURL = canvas.toDataURL('image/png');
 				// Read embedded text in each pages
 				const content = await page.getTextContent({
 					disableNormalization: true,
