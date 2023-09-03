@@ -7,10 +7,10 @@ export default {
         dark: '#111111',
         light: '#FAFAFA'
       }
-    },
+    }
   },
-  plugins: [require("daisyui")],
+  plugins: [require('daisyui')],
   daisyui: {
-    themes: ['black', 'lofi'],
+    themes: ['black', 'lofi']
   }
-}
+};
