@@ -30,15 +30,14 @@
 </script>
 
 <div class="drawer relative">
-  <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content items-start justify-start pt-4 h-screen overflow-y-auto">
     {#if !isSidebarVisible}
       <button on:click={toggleSidebar} class="btn btn-primary">Show Reviews</button>
     {/if}
     <!-- Page content here -->
     {#if $paragraphs.length > 0}
-      <div class="w-2/3 p-4 border rounded">
-        <div class="flex flex-col h-screen overflow-y-auto p-8 space-y-4">
+      <div class="textarea-frame">
+        <div class="textarea-container">
           {#each $paragraphs as paragraph}
             <TextArea bind:value={paragraph} minRows={0} maxRows={40}/>  
           {/each}
@@ -46,7 +45,7 @@
       </div>
     {/if}
   </div>
-  <div bind:this={sidebar} class="flex flex-row h-screen">
+  <div bind:this={sidebar} class="sidebar-container">
     <div class="drawer-overlay {sidebarWidth} h-screen bg-base-200 text-base-content relative overflow-y-auto">
       <button on:click={toggleSidebar} class="btn btn-block" tabindex="0">Hide Reviews</button>
       <ul class="menu p-4 overflow-y-auto">
@@ -63,5 +62,13 @@
 </div>
 
 <style lang="postcss">
-
+  .textarea-frame {
+    @apply p-4 border rounded;
+  }
+  .textarea-container {
+    @apply flex flex-col h-screen overflow-y-auto p-8 space-y-4;
+  }
+  .sidebar-container {
+    @apply flex flex-row h-screen;
+  }
 </style>
