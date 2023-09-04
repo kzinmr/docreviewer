@@ -1,6 +1,11 @@
 <script lang='ts'>
   import JSZip from 'jszip';
-  import { paragraphs } from '$/store';
+  import * as pdfjsLib from 'pdfjs-dist';
+  import { paragraphs, pdfDoc } from '$/store';
+  import { generateUUID } from '$lib/utils/uuid';
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
+  // console.log(pdfjsLib.GlobalWorkerOptions);
 
   export let redirectCallback: (() => void) | null = null;
 
@@ -8,20 +13,36 @@
 	$: if (files) {
 		// Reset stores when files are changed
 		$paragraphs = [];
-	}
+  }
+  let uuidFileName: string;
 
 	const loadFile = async (file: File) => {
-		return new Promise<{ content: ArrayBuffer,filename: string }>((resolve) => {
+		return new Promise<ArrayBuffer>((resolve) => {
 			const reader = new FileReader();
 			reader.onload = (e: ProgressEvent<FileReader>) => {
 				if (e.target?.result !== undefined) {
 					const content = e.target.result as ArrayBuffer;
-					resolve({ content: content, filename: file.name });
+  				resolve(content);
 				}
 			};
 			reader.readAsArrayBuffer(file);
 		});
 	};
+
+	async function loadDOCX() {
+		if (files !== null) {
+			const file: File = Array.from(files)[0];
+			const content = await loadFile(file);
+      $paragraphs = await parseDOCXParagraphs(content);
+      // for rendering docx as pdf with pages and styles
+      await convertToPdf(file);
+		}
+
+    if (redirectCallback !== null) {
+      redirectCallback();
+    }
+	}
+
   async function parseDOCXParagraphs(zipData: ArrayBuffer) {
     const paragraphs: string[] = [];
     const zipper = new JSZip();
@@ -48,17 +69,35 @@
 
     return paragraphs;
   }
-	async function loadDOCX() {
-		if (files !== null) {
-			const file: File = Array.from(files)[0];
-			const fileContent = await loadFile(file);
-      $paragraphs = await parseDOCXParagraphs(fileContent.content);
-		}
-    if (redirectCallback !== null) {
-      redirectCallback();
-    }
-	}
 
+  async function convertToPdf(file: File) {
+    const gotenberg_domain = 'http://localhost:8080/gotenberg';
+
+    const uuid = generateUUID();
+    const fileExtension = file.name.split('.').pop();
+    uuidFileName = `${uuid}.${fileExtension}`;
+    const blobUpload = new Blob([file], { type: file.type });
+
+    const formData = new FormData();
+    formData.append('file', blobUpload, uuidFileName);
+
+    try {
+      const response = await fetch(`${gotenberg_domain}/forms/libreoffice/convert`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const blob = await response.blob();
+      const content = new Uint8Array(await blob.arrayBuffer());
+			$pdfDoc = await pdfjsLib.getDocument({ data: content }).promise;
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  }
 </script>
 
 <div class="upload-container">
@@ -76,14 +115,9 @@
   <button disabled={!files} on:click={loadDOCX} class="btn btn-block">upload</button>
 </div>
 
-
 <style lang="postcss">
   .upload-container {
-    @apply w-2/3 p-4 border rounded;
-    margin: auto;
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
-    height: fit-content;
+    @apply w-2/3 p-4 border rounded m-auto;
   }
   .file-input-container {
     @apply flex justify-between items-center p-1 border-dashed border-2 rounded bg-slate-50;
