@@ -36,3 +36,21 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Prisma
+
+Setup
+
+- Init: `npx prisma init --datasource-provider postgresql`
+  - => `prisma/schema.prisma`
+- Edit: `package.json` & `tsconfig.json`
+- Create DB: `createdb {dbname}`
+- Add to `.env`: `DATABASE_URL=postgresql://{username}:{passwd}@localhost:5432/{dbname}?schema=public`
+- Create Initial Data: `prisma/seed.ts` & `lib/data.json`
+
+Routine
+- Seed: `npx prisma db seed`
+- Reset DB: `prisma db push --force-reset`
+- Migration: `npx prisma migrate dev --name init`
+  - => `prisma/migrations`
+- Studio: `npx prisma studio`
