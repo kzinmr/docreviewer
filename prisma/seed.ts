@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client'
-import playbookData from "../src/lib/data.json" assert { type: "json" }
+import { PrismaClient } from '@prisma/client';
+import playbookData from '../src/lib/data.json' assert { type: 'json' };
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log(`Start seeding ...`)
+  console.log(`Start seeding ...`);
 
   for (const p of playbookData) {
     console.log(p);
@@ -17,9 +17,9 @@ async function main() {
         name: p.author.name,
         email: p.author.email
       }
-    })
+    });
 
-    console.log(`Created or updated user with id: ${user.id}`)
+    console.log(`Created or updated user with id: ${user.id}`);
 
     const playbook = await prisma.playbook.create({
       data: {
@@ -28,7 +28,7 @@ async function main() {
         type: p.type,
         authorId: user.id,
         rules: {
-          create: p.rules.map(r => ({
+          create: p.rules.map((r) => ({
             name: r.name,
             description: r.description,
             type: r.type,
@@ -46,7 +46,7 @@ async function main() {
           }))
         },
         knowledges: {
-          create: p.knowledges.map(k => ({
+          create: p.knowledges.map((k) => ({
             name: k.name,
             description: k.description,
             type: k.type,
@@ -55,20 +55,20 @@ async function main() {
           }))
         }
       }
-    })
+    });
 
-    console.log(`Created playbook with id: ${playbook.id}`)
+    console.log(`Created playbook with id: ${playbook.id}`);
   }
 
-  console.log(`Seeding finished.`)
+  console.log(`Seeding finished.`);
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

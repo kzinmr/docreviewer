@@ -1,99 +1,99 @@
 [
   {
-      "id": 1,
-      "name": "Contract Review Playbook",
-      "description": "Playbook for standard contract reviews.",
-      "type": "Contract",
-      "rules": [
-          {
-              "id": 1,
-              "name": "Clause Verification",
-              "description": "Checks if all mandatory clauses are present.",
-              "type": "Verification",
-              "logic": "MandatoryClauseCheck()",
-              "level": "High",
-              "action": {
-                  "id": 1,
-                  "name": "Highlight Clause",
-                  "description": "Highlights the missing clause.",
-                  "type": "Highlight",
-                  "logic": "HighlightText()"
-              }
-          },
-          {
-              "id": 2,
-              "name": "Expiration Date Check",
-              "description": "Checks if expiration date is valid.",
-              "type": "Validation",
-              "logic": "DateValidation()",
-              "level": "Medium",
-              "action": {
-                  "id": 2,
-                  "name": "Show Warning",
-                  "description": "Shows a warning for invalid date.",
-                  "type": "Warning",
-                  "logic": "ShowPopup()"
-              }
-          }
-      ],
-      "knowledges": [
-          {
-              "id": 1,
-              "name": "Mandatory Clauses",
-              "description": "List of all mandatory clauses for contracts.",
-              "type": "List",
-              "source": "Internal Database",
-              "category": "Contract"
-          },
-          {
-              "id": 2,
-              "name": "Valid Date Formats",
-              "description": "List of valid date formats.",
-              "type": "List",
-              "source": "Internal Database",
-              "category": "Contract"
-          }
-      ],
-      "author": {
-          "name": "John Doe",
-          "email": "john.doe@company.com"
+    "id": 1,
+    "name": "Contract Review Playbook",
+    "description": "Playbook for standard contract reviews.",
+    "type": "Contract",
+    "rules": [
+      {
+        "id": 1,
+        "name": "Clause Verification",
+        "description": "Checks if all mandatory clauses are present.",
+        "type": "Verification",
+        "logic": "MandatoryClauseCheck()",
+        "level": "High",
+        "action": {
+          "id": 1,
+          "name": "Highlight Clause",
+          "description": "Highlights the missing clause.",
+          "type": "Highlight",
+          "logic": "HighlightText()"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Expiration Date Check",
+        "description": "Checks if expiration date is valid.",
+        "type": "Validation",
+        "logic": "DateValidation()",
+        "level": "Medium",
+        "action": {
+          "id": 2,
+          "name": "Show Warning",
+          "description": "Shows a warning for invalid date.",
+          "type": "Warning",
+          "logic": "ShowPopup()"
+        }
       }
+    ],
+    "knowledges": [
+      {
+        "id": 1,
+        "name": "Mandatory Clauses",
+        "description": "List of all mandatory clauses for contracts.",
+        "type": "List",
+        "source": "Internal Database",
+        "category": "Contract"
+      },
+      {
+        "id": 2,
+        "name": "Valid Date Formats",
+        "description": "List of valid date formats.",
+        "type": "List",
+        "source": "Internal Database",
+        "category": "Contract"
+      }
+    ],
+    "author": {
+      "name": "John Doe",
+      "email": "john.doe@company.com"
+    }
   },
   {
-      "id": 2,
-      "name": "NDA Review Playbook",
-      "description": "Playbook for reviewing NDAs.",
-      "type": "NDA",
-      "rules": [
-          {
-              "id": 3,
-              "name": "Confidentiality Clause Check",
-              "description": "Checks the presence of confidentiality clause.",
-              "type": "Verification",
-              "logic": "ConfidentialityClauseCheck()",
-              "level": "High",
-              "action": {
-                  "id": 3,
-                  "name": "Highlight Confidentiality Clause",
-                  "description": "Highlights the confidentiality clause if missing.",
-                  "type": "Highlight",
-                  "logic": "HighlightText()"
-              }
-          }
-      ],
-      "knowledges": [
-          {
-              "id": 3,
-              "name": "NDA Standard Clauses",
-              "description": "List of standard clauses for NDAs.",
-              "type": "List",
-              "source": "Internal Database",
-              "category": "NDA"
-          }
-      ],
-      "author": {
-          "name": "Jane Smith",
-          "email": "jane.smith@company.com"
+    "id": 2,
+    "name": "NDA Review Playbook",
+    "description": "Playbook for reviewing NDAs.",
+    "type": "NDA",
+    "rules": [
+      {
+        "id": 3,
+        "name": "Confidentiality Clause Check",
+        "description": "Checks the presence of confidentiality clause.",
+        "type": "Verification",
+        "logic": "ConfidentialityClauseCheck()",
+        "level": "High",
+        "action": {
+          "id": 3,
+          "name": "Highlight Confidentiality Clause",
+          "description": "Highlights the confidentiality clause if missing.",
+          "type": "Highlight",
+          "logic": "HighlightText()"
+        }
       }
+    ],
+    "knowledges": [
+      {
+        "id": 3,
+        "name": "NDA Standard Clauses",
+        "description": "List of standard clauses for NDAs.",
+        "type": "List",
+        "source": "Internal Database",
+        "category": "NDA"
+      }
+    ],
+    "author": {
+      "name": "Jane Smith",
+      "email": "jane.smith@company.com"
+    }
   }
 ]

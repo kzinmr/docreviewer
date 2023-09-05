@@ -57,6 +57,7 @@ Setup
 - Create Initial Data: `prisma/seed.ts` & `lib/data.json`
 
 Routine
+
 - Seed: `npx prisma db seed`
 - Reset DB: `prisma db push --force-reset`
 - Migration: `npx prisma migrate dev --name init`
