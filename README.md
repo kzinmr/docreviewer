@@ -54,12 +54,13 @@ Setup
 - Edit: `package.json` & `tsconfig.json`
 - Create DB: `createdb {dbname}`
 - Add to `.env`: `DATABASE_URL=postgresql://{username}:{passwd}@localhost:5432/{dbname}?schema=public`
+- Generate Client: `npx prisma generate`
+- Initial Migration: `npx prisma migrate dev --name init`
 - Create Initial Data: `prisma/seed.ts` & `lib/data.json`
 
 Routine
 
 - Seed: `npx prisma db seed`
 - Reset DB: `prisma db push --force-reset`
-- Migration: `npx prisma migrate dev --name init`
-  - => `prisma/migrations`
+- Migration: `npx prisma migrate dev --name some_name`
 - Studio: `npx prisma studio`
