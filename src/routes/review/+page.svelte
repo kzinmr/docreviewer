@@ -46,16 +46,16 @@
     {/if}
   </div>
   <div bind:this={sidebar} class="sidebar-container">
-    <div class="drawer-overlay {sidebarWidth} h-screen bg-base-200 text-base-content relative overflow-y-auto">
-      <button on:click={toggleSidebar} class="btn btn-block" tabindex="0">Hide Reviews</button>
-      <ul class="menu p-4 overflow-y-auto">
-        <!-- Sidebar content here -->
-        {#each Array(100) as _, n}
-          <li><a href="/">Review Item {n}</a></li>
-        {/each}
-      </ul>
-    </div>
     {#if isSidebarVisible}
+      <div class="drawer-overlay {sidebarWidth} h-screen bg-base-200 text-base-content relative overflow-y-auto">
+        <button on:click={toggleSidebar} class="btn btn-block" tabindex="0">Hide Reviews</button>
+        <ul class="menu p-4 overflow-y-auto">
+          <!-- Sidebar content here -->
+          {#each Array(100) as _, n}
+            <li><a href="/">Review Item {n}</a></li>
+          {/each}
+        </ul>
+      </div>
       <div bind:this={resizer} on:mousedown|preventDefault={handleMousedown} class="cursor-ew-resize w-2 z-10 bg-base-300" tabindex="0" role="spinbutton"></div>
     {/if}
   </div>
