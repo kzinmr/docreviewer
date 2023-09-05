@@ -10,8 +10,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
-    "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.1.0",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@prisma/client": "^5.2.0",
     "jszip": "^3.10.1",
-		"pdfjs-dist": "^3.10.111"
+    "pdfjs-dist": "^3.10.111"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
