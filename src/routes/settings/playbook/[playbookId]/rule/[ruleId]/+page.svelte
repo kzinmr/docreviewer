@@ -30,14 +30,14 @@
       name="pattern"
       placeholder="Keyword or Regex Pattern"
       type="text"
-      value={form?.pattern ?? rule?.logic.pattern}
+      value={form?.pattern ?? rule?.logic?.pattern}
     />
     <h2>Pattern Type</h2>
     <input
       name="type"
       placeholder="Type of Pattern"
       type="text"
-      value={form?.name ?? rule?.logic.type}
+      value={form?.type ?? rule?.logic?.type}
     />
     <button type="submit" formaction="?/updateRule">Update</button>
     <a class="back" href="/settings?playbookId={playbookId}"> Cancel </a>

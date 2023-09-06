@@ -26,7 +26,7 @@
       name="type"
       placeholder="Type of Pattern"
       type="text"
-      value={form?.name ?? ''}
+      value={form?.type ?? ''}
     />
     <button type="submit">Create</button>
     <a class="back" href="/settings?playbookId={data.playbookId}"> Cancel </a>
