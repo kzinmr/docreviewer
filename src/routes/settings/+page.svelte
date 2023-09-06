@@ -29,7 +29,7 @@
   $: selectedPlaybook =
     $selectedPlaybookId !== null
       ? data.playbooks.find((playbook) => playbook.id === $selectedPlaybookId)
-      : null;
+      : null;    
 </script>
 
 {#if selectedPlaybook?.rules}
