@@ -1,27 +1,40 @@
 version: '3'
 services:
-  frontend:
-    image: svelte-app
+  app:
+    image: docreviewer-app
     build:
       context: .
       dockerfile: ./Dockerfile
+    working_dir: /app
     environment:
       - NODE_ENV=development
       - PORT=5173
+      - DATABASE_URL=postgres://myuser:mypassword@postgres:5432/mydatabase?schema=public
     ports:
       - 5173:5173
     volumes:
       - ./src:/app/src
-      - ./static:/app/static
-      - ./vite.config.ts:/app/vite.config.ts
-      - ./svelte.config.js:/app/svelte.config.js
+    depends_on:
+      - postgres
+      - gotenberg
 
   gotenberg:
     image: gotenberg/gotenberg:7
     environment:
       - LOG_LEVEL=DEBUG
     ports:
-      - '3000:3000'
+      - 3000:3000
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
   proxy:
     image: nginx:latest
@@ -29,3 +42,6 @@ services:
       - '8080:80'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  postgres_data:

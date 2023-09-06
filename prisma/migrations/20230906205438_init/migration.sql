@@ -15,7 +15,7 @@ CREATE TABLE "Rule" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "logicId" INTEGER NOT NULL,
+    "logicId" INTEGER,
     "playbookId" INTEGER NOT NULL,
 
     CONSTRAINT "Rule_pkey" PRIMARY KEY ("id")
