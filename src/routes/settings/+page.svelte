@@ -1,34 +1,79 @@
-<script lang='ts'>
-    import SidebarPage from '$/components/SidebarPage.svelte';
-    import type { PageData } from './$types';
-    import { selectedPlaybookId } from '$/store';
+<script lang="ts">
+  import type { PageData } from './$types';
+  import Icons from '$/components/Icons.svelte';
+  import { selectedPlaybookId } from '$/store';
 
-  export let data: PageData;
+  // FIXME: PageDataがplaybooksしか含まず、rules以下を含まないのを自動で直したい
+  interface MyPageData extends PageData {
+    playbooks: {
+      id: number;
+      name: string;
+      description: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+      type: string;
+      authorId: number | null;
+      rules: {
+        id: number;
+        name: string;
+        description: string | null;
+        logic: {
+          pattern: string;
+          type: string;
+        };
+      }[];
+    }[];
+  }
+  export let data: MyPageData;
 
-  $: selectedPlaybook = $selectedPlaybookId !== null
-    ? data.playbooks.find(playbook => playbook.id === $selectedPlaybookId)
-    : null;
+  $: selectedPlaybook =
+    $selectedPlaybookId !== null
+      ? data.playbooks.find((playbook) => playbook.id === $selectedPlaybookId)
+      : null;
 </script>
 
-<SidebarPage>
-  <div slot="sidebar-content">
-    <ul class="menu p-4 overflow-y-auto">
-      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-      {#each data.playbooks as playbook}
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <li on:click={() => $selectedPlaybookId = playbook.id}>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <a class:active={$selectedPlaybookId === playbook.id}>{playbook.name}</a>
-        </li>
-      {/each}
-    </ul>
+{#if selectedPlaybook?.rules}
+  <!-- <Playbook selectedPlaybook> -->
+  <div>
+    <h1>{selectedPlaybook?.name}</h1>
+    <p>{selectedPlaybook?.description}</p>
+    <a href={`/settings/playbook/${$selectedPlaybookId}`} class="btn m-1 btn-ghost">
+      <Icons type="edit" />
+    </a>
   </div>
-  <div slot="page-content">
-    {#if selectedPlaybook?.rules}
-      {#each selectedPlaybook.rules as rule}
-        <li>{rule.name}</li>
-      {/each}
-    {/if}
+  <h1>Rules</h1>
+  <a href={`/settings/playbook/${$selectedPlaybookId}/rule/create`} class="btn btn-square btn-ghost"><Icons type="plus" /></a>
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Pattern</th>
+          <th>Pattern Type</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each selectedPlaybook.rules as rule, i}
+          <tr>
+            <th>{i + 1}</th>
+            <td>{rule.name}</td>
+            <td>{rule.description}</td>
+            <td>{rule.logic.pattern}</td>
+            <td>{rule.logic.type}</td>
+            <td>
+              <a
+                href={`/settings/playbook/${$selectedPlaybookId}/rule/${rule.id}`}
+                class="btn m-1 btn-ghost"
+              >
+                <Icons type="edit" />
+              </a>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
-
-</SidebarPage>
+{/if}

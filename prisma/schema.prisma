@@ -8,55 +8,47 @@ datasource db {
 }
 
 model Playbook {
-  id            Int      @id @default(autoincrement())
-  name          String
-  description   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  type          String
-  rules         Rule[]
-  knowledges    Knowledge[]
-  author        User?    @relation(fields: [authorId], references: [id])
-  authorId      Int?
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  rules       Rule[]
+  knowledges  Knowledge[]
+  author      User?      @relation(fields: [authorId], references: [id])
+  authorId    Int?
 }
 
 model Rule {
-  id            Int        @id @default(autoincrement())
-  name          String
-  description   String?
-  type          String
-  logic         String
-  level         String
-  action        Action?
-  actionId      Int
-  playbook      Playbook   @relation(fields: [playbookId], references: [id])
-  playbookId    Int
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  logic       Logic?
+  logicId     Int?
+  playbook    Playbook  @relation(fields: [playbookId], references: [id])
+  playbookId  Int
+}
+
+model Logic {
+  id      Int    @id @default(autoincrement())
+  pattern String
+  type    String
+  rule    Rule   @relation(fields: [ruleId], references: [id])
+  ruleId  Int    @unique
 }
 
 model Knowledge {
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String?
-  type          String
-  source        String
-  category      String
-  playbook      Playbook  @relation(fields: [playbookId], references: [id])
-  playbookId    Int
-}
-
-model Action {
-  id            Int     @id @default(autoincrement())
-  name          String
-  description   String?
-  type          String?
-  logic         String
-  rule          Rule    @relation(fields: [ruleId], references: [id])
-  ruleId        Int     @unique
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  source      String?
+  playbook    Playbook  @relation(fields: [playbookId], references: [id])
+  playbookId  Int
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   name      String?
   playbooks Playbook[]
 }

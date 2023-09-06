@@ -61,6 +61,6 @@ Setup
 Routine
 
 - Seed: `npx prisma db seed`
-- Reset DB: `prisma db push --force-reset`
+- Reset DB: `npx prisma db push --force-reset`
 - Migration: `npx prisma migrate dev --name some_name`
 - Studio: `npx prisma studio`

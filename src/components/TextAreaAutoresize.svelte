@@ -1,10 +1,9 @@
 <script>
 	export let value = '';
-	export let minRows = 1;
-	export let maxRows;
-	
-	$: minHeight = `${1 + minRows * 1.2}em`;
-	$: maxHeight = maxRows ? `${1 + maxRows * 1.2}em` : `auto`;
+	// export let minRows = 1;
+	// export let maxRows;
+	// $: minHeight = `${1 + minRows * 1.2}em`;
+	// $: maxHeight = maxRows ? `${1 + maxRows * 1.2}em` : `auto`;
 </script>
 
 <div class="container">

@@ -25,22 +25,15 @@ async function main() {
       data: {
         name: p.name,
         description: p.description,
-        type: p.type,
         authorId: user.id,
         rules: {
           create: p.rules.map((r) => ({
             name: r.name,
             description: r.description,
-            type: r.type,
-            logic: r.logic,
-            level: r.level,
-            actionId: r.action.id,
-            action: {
+            logic: {
               create: {
-                name: r.action.name,
-                description: r.action.description,
-                type: r.action.type,
-                logic: r.action.logic
+                pattern: r.logic.pattern,
+                type: r.logic.type
               }
             }
           }))
@@ -49,9 +42,7 @@ async function main() {
           create: p.knowledges.map((k) => ({
             name: k.name,
             description: k.description,
-            type: k.type,
-            source: k.source,
-            category: k.category
+            source: k.source
           }))
         }
       }

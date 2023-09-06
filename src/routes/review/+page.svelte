@@ -17,7 +17,7 @@
       <div class="textarea-frame">
         <div class="flex flex-col h-screen overflow-y-auto p-8 space-y-4">
           {#each $paragraphs as paragraph}
-            <TextArea bind:value={paragraph} minRows={0} maxRows={40}/>  
+            <TextArea bind:value={paragraph} />  
           {/each}
         </div>
       </div>

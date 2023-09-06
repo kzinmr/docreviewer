@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Rule" ALTER COLUMN "logicId" DROP NOT NULL;

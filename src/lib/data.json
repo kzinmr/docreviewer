@@ -1,57 +1,44 @@
 [
   {
     "id": 1,
-    "name": "Contract Review Playbook",
-    "description": "Playbook for standard contract reviews.",
-    "type": "Contract",
+    "name": "Services Agreement Playbook",
+    "description": "Playbook for standard services agreement reviews.",
     "rules": [
       {
         "id": 1,
-        "name": "Clause Verification",
-        "description": "Checks if all mandatory clauses are present.",
-        "type": "Verification",
-        "logic": "MandatoryClauseCheck()",
-        "level": "High",
-        "action": {
+        "name": "Mandatory Services Clause Check",
+        "description": "Checks for the presence of the 'Services Provided' clause.",
+        "logic": {
           "id": 1,
-          "name": "Highlight Clause",
-          "description": "Highlights the missing clause.",
-          "type": "Highlight",
-          "logic": "HighlightText()"
+          "pattern": "Services Provided",
+          "type": "string",
+          "ruleId": 1
         }
       },
       {
         "id": 2,
-        "name": "Expiration Date Check",
-        "description": "Checks if expiration date is valid.",
-        "type": "Validation",
-        "logic": "DateValidation()",
-        "level": "Medium",
-        "action": {
+        "name": "Payment Terms Check",
+        "description": "Verifies the 'Payment Terms' clause in the agreement.",
+        "logic": {
           "id": 2,
-          "name": "Show Warning",
-          "description": "Shows a warning for invalid date.",
-          "type": "Warning",
-          "logic": "ShowPopup()"
+          "pattern": "Payment Terms",
+          "type": "string",
+          "ruleId": 2
         }
       }
     ],
     "knowledges": [
       {
         "id": 1,
-        "name": "Mandatory Clauses",
-        "description": "List of all mandatory clauses for contracts.",
-        "type": "List",
-        "source": "Internal Database",
-        "category": "Contract"
+        "name": "Mandatory Clauses for Services Agreement",
+        "description": "List of all mandatory clauses for services agreements.",
+        "source": "Internal Database"
       },
       {
         "id": 2,
-        "name": "Valid Date Formats",
-        "description": "List of valid date formats.",
-        "type": "List",
-        "source": "Internal Database",
-        "category": "Contract"
+        "name": "Valid Date Formats for Services Agreement",
+        "description": "List of valid date formats for services agreements.",
+        "source": "Internal Database"
       }
     ],
     "author": {
@@ -63,21 +50,16 @@
     "id": 2,
     "name": "NDA Review Playbook",
     "description": "Playbook for reviewing NDAs.",
-    "type": "NDA",
     "rules": [
       {
         "id": 3,
-        "name": "Confidentiality Clause Check",
-        "description": "Checks the presence of confidentiality clause.",
-        "type": "Verification",
-        "logic": "ConfidentialityClauseCheck()",
-        "level": "High",
-        "action": {
+        "name": "Confidentiality Clause Presence",
+        "description": "Checks for the keyword 'Confidentiality' in the agreement.",
+        "logic": {
           "id": 3,
-          "name": "Highlight Confidentiality Clause",
-          "description": "Highlights the confidentiality clause if missing.",
-          "type": "Highlight",
-          "logic": "HighlightText()"
+          "pattern": "Confidentiality",
+          "type": "string",
+          "ruleId": 3
         }
       }
     ],
@@ -86,14 +68,160 @@
         "id": 3,
         "name": "NDA Standard Clauses",
         "description": "List of standard clauses for NDAs.",
-        "type": "List",
-        "source": "Internal Database",
-        "category": "NDA"
+        "source": "Internal Database"
       }
     ],
     "author": {
       "name": "Jane Smith",
       "email": "jane.smith@company.com"
+    }
+  },
+  {
+    "id": 3,
+    "name": "業務委託契約書レビューPlaybook",
+    "description": "業務委託契約書のレビュー用プレイブック。",
+    "rules": [
+      {
+        "id": 4,
+        "name": "業務内容の確認",
+        "description": "契約書に業務の内容が具体的に記載されているかを確認する。",
+        "logic": {
+          "id": 4,
+          "pattern": "業務内容",
+          "type": "string",
+          "ruleId": 4
+        }
+      },
+      {
+        "id": 5,
+        "name": "報酬の確認",
+        "description": "報酬の額や支払い時期が明確に記載されているかを確認する。",
+        "logic": {
+          "id": 5,
+          "pattern": "報酬",
+          "type": "string",
+          "ruleId": 5
+        }
+      },
+      {
+        "id": 6,
+        "name": "契約期間の確認",
+        "description": "契約の有効期間や更新に関する記載があるかを確認する。",
+        "logic": {
+          "id": 6,
+          "pattern": "契約期間",
+          "type": "string",
+          "ruleId": 6
+        }
+      },
+      {
+        "id": 7,
+        "name": "機密情報の取り扱い確認",
+        "description": "契約書における機密情報の取り扱いに関する記載があるかを確認する。",
+        "logic": {
+          "id": 7,
+          "pattern": "機密情報",
+          "type": "string",
+          "ruleId": 7
+        }
+      },
+      {
+        "id": 8,
+        "name": "終了時の義務確認",
+        "description": "契約終了時の義務（成果物の引き渡し、資料の返還など）に関する記載があるかを確認する。",
+        "logic": {
+          "id": 8,
+          "pattern": "契約終了時の義務",
+          "type": "string",
+          "ruleId": 8
+        }
+      }
+    ],
+    "knowledges": [
+      {
+        "id": 4,
+        "name": "業務委託契約の必須条項",
+        "description": "業務委託契約の必須条項の一覧。",
+        "source": "社内データベース"
+      }
+    ],
+    "author": {
+      "name": "鈴木太郎",
+      "email": "suzuki.tarou@company.jp"
+    }
+  },
+  {
+    "id": 4,
+    "name": "秘密保持契約レビューPlaybook",
+    "description": "秘密保持契約のレビュー用プレイブック。",
+    "rules": [
+      {
+        "id": 9,
+        "name": "秘密情報の定義確認",
+        "description": "契約書に「秘密情報」の定義が含まれているかを確認する。",
+        "logic": {
+          "id": 9,
+          "pattern": "秘密情報",
+          "type": "string",
+          "ruleId": 9
+        }
+      },
+      {
+        "id": 10,
+        "name": "秘密保持期間の確認",
+        "description": "「秘密保持期間」が明確に記載されているかを確認する。",
+        "logic": {
+          "id": 10,
+          "pattern": "秘密保持期間",
+          "type": "string",
+          "ruleId": 10
+        }
+      },
+      {
+        "id": 11,
+        "name": "返還または廃棄の義務確認",
+        "description": "秘密情報を返還または廃棄する義務に関する記載があるかを確認する。",
+        "logic": {
+          "id": 11,
+          "pattern": "返還",
+          "type": "string",
+          "ruleId": 11
+        }
+      },
+      {
+        "id": 12,
+        "name": "秘密情報の使用制限確認",
+        "description": "契約書に秘密情報の使用に関する制限が明確に記載されているかを確認する。",
+        "logic": {
+          "id": 12,
+          "pattern": "秘密情報の使用制限",
+          "type": "string",
+          "ruleId": 12
+        }
+      },
+      {
+        "id": 13,
+        "name": "第三者への開示制限確認",
+        "description": "契約書に第三者への秘密情報の開示に関する制限が明確に記載されているかを確認する。",
+        "logic": {
+          "id": 13,
+          "pattern": "第三者への開示制限",
+          "type": "string",
+          "ruleId": 13
+        }
+      }
+    ],
+    "knowledges": [
+      {
+        "id": 5,
+        "name": "NDAの必須条項",
+        "description": "秘密保持契約の必須条項の一覧。",
+        "source": "社内データベース"
+      }
+    ],
+    "author": {
+      "name": "佐藤花子",
+      "email": "sato.hanako@company.jp"
     }
   }
 ]
