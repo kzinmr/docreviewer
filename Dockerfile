@@ -1,30 +1,38 @@
-FROM node:18.12.1-slim as builder
+# Build stage
+FROM node:18.15-slim as builder
 
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
-COPY tsconfig.json ./
-COPY vite.config.ts ./
-COPY tailwind.config.js ./
-COPY postcss.config.js ./
-RUN npm ci --omit dev
-COPY . .
-RUN npm install vite
+RUN apt-get update -y
+RUN apt-get install -y openssl
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Generate Prisma Client
+COPY prisma ./prisma
+RUN npx prisma generate
+
+# Copy other necessary files and build
+COPY tsconfig.json vite.config.ts svelte.config.js tailwind.config.js postcss.config.js ./
+COPY src ./src
+COPY static ./static
 RUN npm run build
 
-# Production
-FROM node:18.12.1-slim
-
-WORKDIR /app
-
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/node_modules ./node_modules
-# RUN mkdir -p /app/node_modules/pdfjs-dist/build/
-# COPY --from=builder /app/node_modules/pdfjs-dist/build/pdf.worker.js /app/node_modules/pdfjs-dist/build/
 EXPOSE 5173
+CMD ["npm", "run", "start:dev"]
 
-# CMD ["npm", "run", "dev"]
-CMD ["node", "build"]
+# # Production stage
+# FROM node:18.15-slim
+
+# WORKDIR /app
+
+# # Copy only necessary files from builder stage
+# COPY --from=builder /app/build ./build
+# COPY --from=builder /app/package*.json ./
+# COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/prisma ./prisma
+
+# EXPOSE 5173
+# CMD ["npm", "run", "start:dev"]
