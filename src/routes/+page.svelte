@@ -5,5 +5,5 @@
 </script>
 <div class="space-y-8 mt-20">
   <DOCXUploader redirectCallback={() => goto('/review?playbookId=1')} />
-  <PDFUploader redirectCallback={() => goto('/preview')} />
+  <!-- <PDFUploader redirectCallback={() => goto('/preview')} /> -->
 </div>
