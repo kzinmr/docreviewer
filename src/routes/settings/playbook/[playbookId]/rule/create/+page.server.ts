@@ -15,7 +15,7 @@ export const actions = {
     const type = data.get('type');
 
     if (!name || !description || !pattern || !type) {
-      return fail(400, { name, description, missing: true });
+      return fail(400, { name, description, pattern, type, missing: true });
     }
 
     if (

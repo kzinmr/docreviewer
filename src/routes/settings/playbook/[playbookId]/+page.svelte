@@ -1,73 +1,32 @@
 <script lang="ts">
+  import EditForm from '$/components/EditForm.svelte';
   import type { ActionData, PageData } from './$types';
 
   export let form: ActionData;
   export let data: PageData;
   const { playbook } = data;
+  const title = 'Edit Playbook';
+  const missing = form?.missing ?? false;
+  const redirectUrl = `/settings?playbookId=${playbook?.id}`;
+  const updateAction = '?/updatePlaybook';
+  const deleteAction = '?/deletePlaybook';
+  const confirmationMassage = 'Will you really DELETE this playbook?';
 </script>
 
-<div class="page">
-  <h1>Edit Playbook</h1>
-  <form method="post" class="actions">
-    {#if form?.missing}<p class="error">Missing field required!</p>{/if}
+<EditForm {title} {missing} {redirectUrl} {updateAction} {deleteAction} {confirmationMassage}>
+  <div>
     <h2>Name</h2>
-    <input
-      name="name"
-      placeholder="Name"
-      type="text"
-      value={form?.name ?? playbook?.name}
-    />
+    <input name="name" placeholder="Name" type="text" value={form?.name ?? playbook?.name} />
     <h2>Description</h2>
-    <textarea
-      name="description"
-      cols="50"
-      placeholder="Description"
-      rows="8"
-      value={form?.description ?? playbook?.description}
-    />
-    <button type="submit" formaction="?/updatePlaybook">Update</button>
-    <a class="back" href="/settings?playbookId={playbook?.id}"> Cancel </a>
-  </form>
-  <div class="flex align-bottom justify-end border-0">
-    <button class="btn" onclick="my_modal_1.showModal()">Delete Playbook</button>
-    <dialog id="my_modal_1" class="modal">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg">CONFIRMATION</h3>
-        <p class="py-4">Will you really DELETE this playbook?</p>
-        <div class="modal-action">
-          <form method="post" class="actions">
-            <button
-              formaction="?/deletePlaybook"
-              class="btn bg-red-600 hover:bg-red-700 text-white"
-            >
-              Delete
-            </button>
-          </form>
-          <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
-            <button class="btn">Close</button>
-          </form>
-        </div>
-      </div>
-    </dialog>
+    <textarea name="description" cols="50" placeholder="Description" rows="8">
+      {form?.description ?? playbook?.description}
+    </textarea>
   </div>
-</div>
+</EditForm>
 
 <style lang="postcss">
-  .page {
-    @apply flex flex-col justify-center items-center p-12 bg-white;
-  }
   input[type='text'],
   textarea {
     @apply w-full p-2 my-2 rounded-md border border-gray-300;
-  }
-  button[type='submit'] {
-    @apply bg-gray-200 border-0 px-8 py-4;
-  }
-  .back {
-    @apply mx-4;
-  }
-  .error {
-    @apply bg-red-600;
   }
 </style>
