@@ -1,32 +1,12 @@
 <script lang="ts">
-  import SidebarPage from '$/components/SidebarPage.svelte';
-  import Icons from '$/components/Icons.svelte';
-  import { page } from '$app/stores';
-  import type { LayoutData } from './$types';
-  import { error } from '@sveltejs/kit';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { error } from '@sveltejs/kit';
+  import type { LayoutData } from './$types';
+  import Icons from '$/components/Icons.svelte';
+  import SidebarPage from '$/components/SidebarPage.svelte';
 
-  interface MyPageData extends LayoutData {
-    playbook: {
-      id: number;
-      name: string;
-      description: string | null;
-      createdAt: Date;
-      updatedAt: Date;
-      type: string;
-      authorId: number | null;
-      rules: {
-        id: number;
-        name: string;
-        description: string | null;
-        logic: {
-          pattern: string;
-          type: string;
-        };
-      }[];
-    };
-  }
-  export let data: MyPageData;
+  export let data: LayoutData;
   if (!data) {
     throw error(500, {
       message: 'No data'
@@ -53,7 +33,7 @@
       <div class="collapse-content">
         <select bind:value={selectedPlaybookId} class="select w-full max-w-xs">
           {#each data.playbooks as playbook}
-            {#if playbook.id === data.playbook.id}
+            {#if playbook.id === data.playbook?.id}
               <option disabled selected value={playbook.id}>{playbook.name}</option>
             {:else}
               <option value={playbook.id}>{playbook.name}</option>
@@ -69,11 +49,15 @@
       <input type="radio" name="my-accordion-2" />
       <div class="collapse-title text-xl font-medium">Review Rules</div>
       <div class="collapse-content">
-        <ul class="menu p-4 overflow-y-auto">
-          {#each data.playbook.rules as rule}
-            <a href="/settings?playbookId={selectedPlaybookId}" class="btn m-1 btn-ghost">{rule.name}</a>
-          {/each}
-        </ul>
+        {#if data.playbook?.rules !== undefined}
+          <ul class="menu p-4 overflow-y-auto">
+            {#each data.playbook?.rules as rule}
+              <a href="/settings?playbookId={selectedPlaybookId}" class="btn m-1 btn-ghost">
+                {rule.name}
+              </a>
+            {/each}
+          </ul>
+        {/if}
       </div>
     </div>
     <div class="collapse collapse-arrow bg-base-200">

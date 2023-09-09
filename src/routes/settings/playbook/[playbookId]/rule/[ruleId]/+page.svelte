@@ -1,6 +1,6 @@
 <script lang="ts">
-  import EditForm from '$/components/EditForm.svelte';
   import type { ActionData, PageData } from './$types';
+  import EditForm from '$/components/EditForm.svelte';
 
   export let form: ActionData;
   export let data: PageData;
@@ -18,12 +18,9 @@
     <h2>Name</h2>
     <input name="name" placeholder="Name" type="text" value={form?.name ?? rule?.name} />
     <h2>Description</h2>
-    <textarea
-      name="description"
-      cols="50"
-      placeholder="Description"
-      rows="8"
-      >{form?.description ?? rule?.description ?? ''}</textarea>
+    <textarea name="description" cols="50" placeholder="Description" rows="8"
+      >{form?.description ?? rule?.description ?? ''}</textarea
+    >
     <h2>Pattern</h2>
     <input
       name="pattern"

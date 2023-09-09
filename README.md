@@ -8,7 +8,6 @@ Document reviewer project with .docx file:
 
 NOTE: PDF Uploader is provided to allow debugging without Docker.
 
-
 ## Developing
 
 Start a development server:
@@ -18,6 +17,7 @@ npm run dev
 ```
 
 With DB and PDF converter:
+
 ```bash
 docker-compose up
 ```

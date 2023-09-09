@@ -3,33 +3,12 @@
   import Icons from '$/components/Icons.svelte';
   import { selectedPlaybookId } from '$/store';
 
-  // FIXME: PageDataがplaybooksしか含まず、rules以下を含まないのを自動で直したい
-  interface MyPageData extends PageData {
-    playbooks: {
-      id: number;
-      name: string;
-      description: string | null;
-      createdAt: Date;
-      updatedAt: Date;
-      type: string;
-      authorId: number | null;
-      rules: {
-        id: number;
-        name: string;
-        description: string | null;
-        logic: {
-          pattern: string;
-          type: string;
-        };
-      }[];
-    }[];
-  }
-  export let data: MyPageData;
+  export let data: PageData;
 
   $: selectedPlaybook =
     $selectedPlaybookId !== null
       ? data.playbooks.find((playbook) => playbook.id === $selectedPlaybookId)
-      : null;    
+      : null;
 </script>
 
 {#if selectedPlaybook?.rules}
@@ -42,7 +21,12 @@
     </a>
   </div>
   <h1>Rules</h1>
-  <a href={`/settings/playbook/${$selectedPlaybookId}/rule/create`} class="btn btn-square btn-ghost"><Icons type="plus" /></a>
+  <a
+    href={`/settings/playbook/${$selectedPlaybookId}/rule/create`}
+    class="btn btn-square btn-ghost"
+  >
+    <Icons type="plus" />
+  </a>
   <div class="overflow-x-auto">
     <table class="table">
       <thead>
@@ -61,8 +45,8 @@
             <th>{i + 1}</th>
             <td>{rule.name}</td>
             <td>{rule.description}</td>
-            <td>{rule.logic.pattern}</td>
-            <td>{rule.logic.type}</td>
+            <td>{rule.logic?.pattern}</td>
+            <td>{rule.logic?.type}</td>
             <td>
               <a
                 href={`/settings/playbook/${$selectedPlaybookId}/rule/${rule.id}`}

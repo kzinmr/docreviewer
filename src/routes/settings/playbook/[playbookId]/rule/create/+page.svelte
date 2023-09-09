@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CreateForm from '$/components/CreateForm.svelte';
   import type { ActionData, PageData } from './$types';
+  import CreateForm from '$/components/CreateForm.svelte';
 
   export let data: PageData;
   export let form: ActionData;
@@ -12,12 +12,9 @@
 <CreateForm {title} {missing} {redirectUrl}>
   <div>
     <input name="name" placeholder="Name" type="text" value={form?.name ?? ''} />
-    <textarea
-      name="description"
-      cols="50"
-      placeholder="Description"
-      rows="8"
-    >{form?.description ?? ''}</textarea>
+    <textarea name="description" cols="50" placeholder="Description" rows="8"
+      >{form?.description ?? ''}</textarea
+    >
     <input
       name="pattern"
       placeholder="Keyword or Regex Pattern"

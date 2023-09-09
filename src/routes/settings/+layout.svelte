@@ -1,10 +1,10 @@
 <script lang="ts">
-  import SidebarPage from '$/components/SidebarPage.svelte';
-  import type { LayoutData } from './$types';
-  import { selectedPlaybookId } from '$/store';
-  import Icons from '$/components/Icons.svelte';
-  import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import type { LayoutData } from './$types';
+  import Icons from '$/components/Icons.svelte';
+  import SidebarPage from '$/components/SidebarPage.svelte';
+  import { selectedPlaybookId } from '$/store';
 
   const playbookIdStr = $page.url.searchParams.get('playbookId') ?? '';
   if (!isNaN(Number(playbookIdStr))) {
