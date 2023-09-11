@@ -29,7 +29,7 @@
 <div class="drawer relative">
   <div class="drawer-content items-start justify-start pt-4 h-screen overflow-y-auto">
     {#if !isSidebarVisible}
-      <button on:click={toggleSidebar} class="btn btn-primary">{">>"}</button>
+      <button on:click={toggleSidebar} class="btn btn-primary absolute top-0 z-10">{">>"}</button>
     {/if}
     <!-- Page content here -->
     <slot name="page-content"></slot>

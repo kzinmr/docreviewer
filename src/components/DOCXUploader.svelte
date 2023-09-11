@@ -1,10 +1,11 @@
 <script lang='ts'>
   import JSZip from 'jszip';
   import * as pdfjsLib from 'pdfjs-dist';
-  import { paragraphs, pdfDoc } from '$/store';
+  import { paragraphs, pdfDoc, orgDocxContent } from '$/store';
   import { generateUUID } from '$lib/utils/uuid';
 
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
+  const mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   // console.log(pdfjsLib.GlobalWorkerOptions);
 
   export let redirectCallback: (() => void) | null = null;
@@ -33,6 +34,7 @@
 		if (files !== null) {
 			const file: File = Array.from(files)[0];
 			const content = await loadFile(file);
+      $orgDocxContent = content;
       $paragraphs = await parseDOCXParagraphs(content);
       // for rendering docx as pdf with pages and styles
       await convertToPdf(file);
