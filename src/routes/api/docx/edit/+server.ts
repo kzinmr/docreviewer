@@ -27,8 +27,8 @@ function applyOperations(content: ArrayBuffer, operations: Array<Operation>, sav
       case 'delete': {
         // document.deleteLine(position);
         const position = operation.position;
-        const target_element = doc.paragraphs[position]._element;
-        target_element.getparent().remove(paragraph);
+        const target_element = document.paragraphs[position]._element;
+        target_element.getparent().remove(target_element);
         length = document.paragraphs.length;
         break;
       }
