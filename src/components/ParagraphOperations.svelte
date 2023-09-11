@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
   import ParagraphModifyTextArea from '$/components/ParagraphModifyTextArea.svelte';
   import ParagraphInsertButton from '$/components/ParagraphInsertButton.svelte';
   import ParagraphDeleteButton from '$/components/ParagraphDeleteButton.svelte';
@@ -13,11 +13,10 @@
   // $: displaySpacesAndNewlines(paragraph);
   // import { operationDequeue, operationUndoDequeue } from '$/store';
   // $: console.log('operation: ', $operationDequeue, $operationUndoDequeue);
-
 </script>
 
 <div class="flex flex-row">
-  <ParagraphModifyTextArea bind:value={paragraph} position={position} />
-  <ParagraphInsertButton position={position} />
-  <ParagraphDeleteButton position={position} />
+  <ParagraphModifyTextArea bind:value={paragraph} {position} />
+  <ParagraphInsertButton {position} />
+  <ParagraphDeleteButton {position} />
 </div>

@@ -5,12 +5,12 @@
   export let position: number;
 
   const insertTextarea = () => {
-    $paragraphs.splice(position+1, 0, '');
+    $paragraphs.splice(position + 1, 0, '');
     $paragraphs = $paragraphs;
     $previousParagraphs = [...$paragraphs];
     $operationDequeue.enqueue({
       type: 'insert',
-      position: position+1
+      position: position + 1
     });
   };
 </script>
