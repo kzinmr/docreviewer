@@ -20,15 +20,15 @@
             $paragraphs.splice(operation.position, 0, operation.oldContent);
             $paragraphs = $paragraphs;
             $previousParagraphs = [...$paragraphs];
-            break;
           }
+          break;
         case 'modify':
           if (operation.position && operation.oldContent !== undefined) {
             $paragraphs[operation.position] = operation.oldContent;
             $paragraphs = $paragraphs;
             $previousParagraphs[operation.position] = operation.oldContent;
-            break;
           }
+          break;
       }
     }
     console.log('undo: ', $operationDequeue, $operationUndoDequeue);

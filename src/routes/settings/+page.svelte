@@ -2,12 +2,13 @@
   import type { PageData } from './$types';
   import Icons from '$/components/Icons.svelte';
   import { selectedPlaybookId } from '$/store';
+  import type { Playbook } from '@prisma/client';
 
   export let data: PageData;
 
   $: selectedPlaybook =
     $selectedPlaybookId !== null
-      ? data.playbooks.find((playbook) => playbook.id === $selectedPlaybookId)
+      ? data.playbooks.find((playbook: Playbook) => playbook.id === $selectedPlaybookId)
       : null;
 </script>
 

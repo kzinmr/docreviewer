@@ -11,9 +11,18 @@
   const updateAction = '?/updateRule';
   const deleteAction = '?/deleteRule';
   const confirmationMassage = 'Will you really DELETE this rule?';
+  const my_modal_1: HTMLDialogElement | null = null;
 </script>
 
-<EditForm {title} {missing} {redirectUrl} {updateAction} {deleteAction} {confirmationMassage}>
+<EditForm
+  {title}
+  {missing}
+  {redirectUrl}
+  {updateAction}
+  {deleteAction}
+  {confirmationMassage}
+  {my_modal_1}
+>
   <div>
     <h2>Name</h2>
     <input name="name" placeholder="Name" type="text" value={form?.name ?? rule?.name} />

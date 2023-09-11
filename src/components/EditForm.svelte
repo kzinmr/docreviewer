@@ -5,6 +5,7 @@
   export let updateAction: string;
   export let deleteAction: string;
   export let confirmationMassage: string;
+  export let my_modal_1: HTMLDialogElement | null = null;
 </script>
 
 <div class="page">
@@ -16,17 +17,14 @@
     <a class="back" href={redirectUrl}> Cancel </a>
   </form>
   <div class="flex align-bottom justify-end border-0">
-    <button class="btn" onclick="my_modal_1.showModal()">Delete</button>
-    <dialog id="my_modal_1" class="modal">
+    <button class="btn" on:click={() => my_modal_1?.showModal()}>Delete</button>
+    <dialog id="my_modal_1" class="modal" bind:this={my_modal_1}>
       <div class="modal-box">
         <h3 class="font-bold text-lg">CONFIRMATION</h3>
         <p class="py-4">{confirmationMassage}</p>
         <div class="modal-action">
           <form method="post" class="actions">
-            <button
-              formaction={deleteAction}
-              class="btn bg-red-600 hover:bg-red-700 text-white"
-            >
+            <button formaction={deleteAction} class="btn bg-red-600 hover:bg-red-700 text-white">
               Delete
             </button>
           </form>

@@ -1,0 +1,28 @@
+name: Test
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docker-compose.yml'
+      - 'docker-compose-prod.yml'
+      - '.gitignore'
+      - '.vscode'
+      - '.prettierrc'
+jobs:
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Install Requirements
+        run: |
+          npm ci
+      - name: Run lint
+        run: |
+          npx eslint .

@@ -1,43 +1,44 @@
-<script lang='ts'>
+<script lang="ts">
   import * as pdfjsLib from 'pdfjs-dist';
   import { pdfDoc } from '$/store';
 
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
   // console.log(pdfjsLib.GlobalWorkerOptions);
 
   export let redirectCallback: (() => void) | null = null;
-  
-	let files: FileList | null = null;
-	$: if (files) {
-		// Reset stores when files are changed
-		$pdfDoc = null;
+
+  let files: FileList | null = null;
+  $: if (files) {
+    // Reset stores when files are changed
+    $pdfDoc = null;
   }
 
-	const loadFile = async (file: File) => {
-		return new Promise<{ content: ArrayBuffer, filename: string }>((resolve) => {
-			const reader = new FileReader();
-			reader.onload = (e: ProgressEvent<FileReader>) => {
-				if (e.target?.result !== undefined) {
-					const content = e.target.result as ArrayBuffer;
-  				resolve({ content: content, filename: file.name });
-				}
-			};
-			reader.readAsArrayBuffer(file);
-		});
-	};
+  const loadFile = async (file: File) => {
+    return new Promise<{ content: ArrayBuffer; filename: string }>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result !== undefined) {
+          const content = e.target.result as ArrayBuffer;
+          resolve({ content: content, filename: file.name });
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  };
 
-	async function loadPDF() {
-		if (files !== null) {
-			const file: File = Array.from(files)[0];
-			const fileContent = await loadFile(file);
+  async function loadPDF() {
+    if (files !== null) {
+      const file: File = Array.from(files)[0];
+      const fileContent = await loadFile(file);
       const content = new Uint8Array(fileContent.content);
-			$pdfDoc = await pdfjsLib.getDocument({ data: content }).promise;
-		}
+      $pdfDoc = await pdfjsLib.getDocument({ data: content }).promise;
+    }
 
     if (redirectCallback !== null) {
       redirectCallback();
     }
-	}
+  }
 </script>
 
 <div class="upload-container">
@@ -54,7 +55,6 @@
   </div>
   <button disabled={!files} on:click={loadPDF} class="btn btn-block">Upload PDF</button>
 </div>
-
 
 <style lang="postcss">
   .upload-container {

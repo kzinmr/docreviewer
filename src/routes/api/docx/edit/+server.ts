@@ -4,6 +4,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { promises as fsPromises } from 'fs';
 import { Document } from 'docxyz';
+import type { Operation } from '$/lib/types';
 
 function applyOperations(content: ArrayBuffer, operations: Array<Operation>, saveTo: string) {
   const document = new Document(content);
@@ -14,10 +15,12 @@ function applyOperations(content: ArrayBuffer, operations: Array<Operation>, sav
       case 'insert': {
         // document.insertLine(position);
         const position = operation.position;
+        if (position === undefined) {
+          break;
+        }
         if (position < length) {
           const target_paragraph = document.paragraphs[position];
-          const new_p = target_paragraph.insert_paragraph_before('');
-          // TODO: copy style of previeous paragraph
+          target_paragraph.insert_paragraph_before('');
         } else if (position === length) {
           document.add_paragraph('');
         }
@@ -27,6 +30,9 @@ function applyOperations(content: ArrayBuffer, operations: Array<Operation>, sav
       case 'delete': {
         // document.deleteLine(position);
         const position = operation.position;
+        if (position === undefined) {
+          break;
+        }
         const target_element = document.paragraphs[position]._element;
         target_element.getparent().remove(target_element);
         length = document.paragraphs.length;
@@ -39,7 +45,7 @@ function applyOperations(content: ArrayBuffer, operations: Array<Operation>, sav
         // const oldContent = operation.oldContent;
         document.paragraphs.forEach((paragraph, index) => {
           if (index === position) {
-            paragraph.text = newContent;
+            paragraph.text = newContent ?? '';
           }
         });
         break;
@@ -56,9 +62,9 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const form = await request.formData();
   console.log(form);
-  const blob = await form.get('file');
-  const content = await blob.arrayBuffer();
-  const operationsStr = await form.get('operations');
+  const blob = form.get('file') as Blob | null;
+  const content = await blob?.arrayBuffer();
+  const operationsStr = form.get('operations') as string;
   const operations = await JSON.parse(operationsStr);
   console.log(operations);
 
