@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "npx prisma migrate deploy && node build",
-    "start:dev": "npx prisma migrate reset --force && ORIGIN=http://localhost:5173 node build",
+    "start:dev": "npx prisma migrate reset --force && ORIGIN=http://localhost:5173 vite dev",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
