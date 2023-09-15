@@ -10,7 +10,7 @@ export const load = (async ({ url }) => {
     return {
       playbook: await prisma.playbook.findUnique({
         where: { id: Number(selectedPlaybookId) },
-        include: { rules: { include: { logic: true } } }
+        include: { reviewPoints: { include: { logic: true } } }
       }),
       playbooks: await prisma.playbook.findMany({})
     };

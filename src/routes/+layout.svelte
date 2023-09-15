@@ -3,10 +3,10 @@
   import Header from '$/components/Header.svelte';
 </script>
 
-<main class="min-h-screen overflow-hidden" data-theme="lofi">
+<main class="min-h-screen flex flex-col overflow-hidden" data-theme="lofi">
   <Header />
-  <div class="min-h-screen overflow-scroll">
+  <!-- 固定配置するHeader高さが約64px(4rem)なためpt-16 -->
+  <div class="flex-grow overflow-scroll pt-16">
     <slot />
-    <!-- <Footer /> -->
   </div>
 </main>

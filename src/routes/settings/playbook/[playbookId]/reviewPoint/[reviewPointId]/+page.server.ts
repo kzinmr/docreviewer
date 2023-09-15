@@ -2,17 +2,17 @@ import prisma from '$lib/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load = (async ({ params: { playbookId, ruleId } }) => {
-  const rule = await prisma.rule.findUnique({
-    where: { id: Number(ruleId) },
+export const load = (async ({ params: { playbookId, reviewPointId } }) => {
+  const reviewPoint = await prisma.reviewPoint.findUnique({
+    where: { id: Number(reviewPointId) },
     include: { logic: true }
   });
 
-  return { rule, playbookId };
+  return { reviewPoint, playbookId };
 }) satisfies PageServerLoad;
 
 export const actions = {
-  updateRule: async ({ request, params: { playbookId, ruleId } }) => {
+  updateReviewPoint: async ({ request, params: { playbookId, reviewPointId } }) => {
     const data = await request.formData();
     const name = data.get('name');
     const description = data.get('description');
@@ -30,8 +30,8 @@ export const actions = {
       return fail(400, { incorrect: true });
     }
 
-    await prisma.rule.update({
-      where: { id: Number(ruleId) },
+    await prisma.reviewPoint.update({
+      where: { id: Number(reviewPointId) },
       data: {
         name: name,
         description: description,
@@ -46,9 +46,9 @@ export const actions = {
 
     throw redirect(303, `/settings/?playbookId=${playbookId}`);
   },
-  deleteRule: async ({ params: { playbookId, ruleId } }) => {
-    await prisma.rule.delete({
-      where: { id: Number(ruleId) }
+  deleteReviewPoint: async ({ params: { playbookId, reviewPointId } }) => {
+    await prisma.reviewPoint.delete({
+      where: { id: Number(reviewPointId) }
     });
 
     throw redirect(303, `/settings/?playbookId=${playbookId}`);

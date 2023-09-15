@@ -12,7 +12,7 @@
       : null;
 </script>
 
-{#if selectedPlaybook?.rules}
+{#if selectedPlaybook?.reviewPoints}
   <!-- <Playbook selectedPlaybook> -->
   <div>
     <h1>{selectedPlaybook?.name}</h1>
@@ -21,9 +21,9 @@
       <Icons type="edit" />
     </a>
   </div>
-  <h1>Rules</h1>
+  <h1>ReviewPoints</h1>
   <a
-    href={`/settings/playbook/${$selectedPlaybookId}/rule/create`}
+    href={`/settings/playbook/${$selectedPlaybookId}/reviewPoint/create`}
     class="btn btn-square btn-ghost"
   >
     <Icons type="plus" />
@@ -41,16 +41,16 @@
         </tr>
       </thead>
       <tbody>
-        {#each selectedPlaybook.rules as rule, i}
+        {#each selectedPlaybook.reviewPoints as reviewPoint, i}
           <tr>
             <th>{i + 1}</th>
-            <td>{rule.name}</td>
-            <td>{rule.description}</td>
-            <td>{rule.logic?.pattern}</td>
-            <td>{rule.logic?.type}</td>
+            <td>{reviewPoint.name}</td>
+            <td>{reviewPoint.description}</td>
+            <td>{reviewPoint.logic?.pattern}</td>
+            <td>{reviewPoint.logic?.type}</td>
             <td>
               <a
-                href={`/settings/playbook/${$selectedPlaybookId}/rule/${rule.id}`}
+                href={`/settings/playbook/${$selectedPlaybookId}/reviewPoint/${reviewPoint.id}`}
                 class="btn m-1 btn-ghost"
               >
                 <Icons type="edit" />

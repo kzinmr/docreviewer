@@ -5,7 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load = (async ({ params: { playbookId } }) => {
   const playbook = await prisma.playbook.findUnique({
     where: { id: Number(playbookId) },
-    include: { rules: { include: { logic: true } } }
+    include: { reviewPoints: { include: { logic: true } } }
   });
 
   return { playbook };

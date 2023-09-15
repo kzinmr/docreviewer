@@ -26,10 +26,11 @@ async function main() {
         name: p.name,
         description: p.description,
         authorId: user.id,
-        rules: {
-          create: p.rules.map((r) => ({
+        reviewPoints: {
+          create: p.reviewPoints.map((r) => ({
             name: r.name,
             description: r.description,
+            level: r.level,
             logic: {
               create: {
                 pattern: r.logic.pattern,
@@ -42,7 +43,24 @@ async function main() {
           create: p.knowledges.map((k) => ({
             name: k.name,
             description: k.description,
-            source: k.source
+            type: k.type,
+            reference: k.reference,
+            document: {
+              create: {
+                type: k.document.type,
+                passages: {
+                  create: k.document.passages.map((passage) => ({
+                    order: passage.order,
+                    lines: {
+                      create: passage.lines.map((line) => ({
+                        text: line.text,
+                        order: line.order
+                      }))
+                    }
+                  }))
+                }
+              }
+            }
           }))
         }
       }

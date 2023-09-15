@@ -13,37 +13,22 @@ model Playbook {
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  rules       Rule[]
+  reviewPoints       ReviewPoint[]
   knowledges  Knowledge[]
   author      User?      @relation(fields: [authorId], references: [id])
   authorId    Int?
 }
 
-model Rule {
+model ReviewPoint {
   id          Int      @id @default(autoincrement())
   name        String
   description String
+  level       String
   logic       Logic?
   logicId     Int?
   playbook    Playbook  @relation(fields: [playbookId], references: [id])
   playbookId  Int
-}
-
-model Logic {
-  id      Int    @id @default(autoincrement())
-  pattern String
-  type    String
-  rule    Rule   @relation(fields: [ruleId], references: [id])
-  ruleId  Int    @unique
-}
-
-model Knowledge {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  source      String?
-  playbook    Playbook  @relation(fields: [playbookId], references: [id])
-  playbookId  Int
+  reviews     Review[]
 }
 
 model User {
@@ -51,4 +36,66 @@ model User {
   email     String     @unique
   name      String?
   playbooks Playbook[]
+}
+
+model Logic {
+  id      Int    @id @default(autoincrement())
+  pattern String
+  type    String
+  reviewPoint    ReviewPoint   @relation(fields: [reviewPointId], references: [id])
+  reviewPointId  Int    @unique
+}
+
+model Knowledge {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  type         String
+  document     Document?
+  documentId   Int?
+  reference    String?
+  playbook     Playbook  @relation(fields: [playbookId], references: [id])
+  playbookId   Int
+}
+
+model Document {
+  id           Int          @id @default(autoincrement())
+  passages     Passage[]
+  type         String
+  knowledge    Knowledge?   @relation(fields: [knowledgeId], references: [id])
+  knowledgeId  Int?         @unique
+}
+
+model Passage {
+  id         Int      @id @default(autoincrement())
+  lines      Line[]
+  order      Int
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId Int
+}
+
+model Line {
+  id         Int      @id @default(autoincrement())
+  text       String
+  order      Int
+  passage    Passage? @relation(fields: [passageId], references: [id])
+  passageId  Int?
+}
+
+model ReviewSession {
+  id         Int      @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  reviews     Review[]
+}
+
+model Review {
+  id               Int        @id @default(autoincrement())
+  createdAt        DateTime   @default(now())
+  status           String
+  level            String
+  reviewPoint    ReviewPoint?   @relation(fields: [reviewPointId], references: [id])
+  reviewPointId  Int
+  targetPassageId  Int
+  reviewSession    ReviewSession @relation(fields: [reviewSessionId], references: [id])
+  reviewSessionId  Int
 }

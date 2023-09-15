@@ -4,13 +4,13 @@
 
   export let form: ActionData;
   export let data: PageData;
-  const { rule, playbookId } = data;
-  const title = 'Edit Rule';
+  const { reviewPoint, playbookId } = data;
+  const title = 'Edit ReviewPoint';
   const missing = form?.missing ?? false;
   const redirectUrl = `/settings?playbookId=${playbookId}`;
-  const updateAction = '?/updateRule';
-  const deleteAction = '?/deleteRule';
-  const confirmationMassage = 'Will you really DELETE this rule?';
+  const updateAction = '?/updateReviewPoint';
+  const deleteAction = '?/deleteReviewPoint';
+  const confirmationMassage = 'Will you really DELETE this reviewPoint?';
   const my_modal_1: HTMLDialogElement | null = null;
 </script>
 
@@ -25,24 +25,24 @@
 >
   <div>
     <h2>Name</h2>
-    <input name="name" placeholder="Name" type="text" value={form?.name ?? rule?.name} />
+    <input name="name" placeholder="Name" type="text" value={form?.name ?? reviewPoint?.name} />
     <h2>Description</h2>
     <textarea name="description" cols="50" placeholder="Description" rows="8"
-      >{form?.description ?? rule?.description ?? ''}</textarea
+      >{form?.description ?? reviewPoint?.description ?? ''}</textarea
     >
     <h2>Pattern</h2>
     <input
       name="pattern"
       placeholder="Keyword or Regex Pattern"
       type="text"
-      value={form?.pattern ?? rule?.logic?.pattern}
+      value={form?.pattern ?? reviewPoint?.logic?.pattern}
     />
     <h2>Pattern Type</h2>
     <input
       name="type"
       placeholder="Type of Pattern"
       type="text"
-      value={form?.type ?? rule?.logic?.type}
+      value={form?.type ?? reviewPoint?.logic?.type}
     />
   </div>
 </EditForm>

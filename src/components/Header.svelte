@@ -3,11 +3,11 @@
   $: currentRoute = $page.url.pathname;
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar flex-shrink-0 fixed top-0 left-0 right-0 z-[1000] bg-base-100">
   <div class="flex-1">
     <a class="btn btn-ghost normal-case text-xl" href="/">DocReviewer</a>
   </div>
-  <div class="flex-none z-[1000]">
+  <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li>
         <a href="/review?playbookId=1">

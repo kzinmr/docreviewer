@@ -17,8 +17,9 @@
 </script>
 
 <div class="container">
-  <pre aria-hidden="true" class="min-h-fit">{value}</pre>
-  <textarea bind:value on:change={modifyTextarea} class="textarea"></textarea>
+  <pre aria-hidden="true">{value}</pre>
+  <textarea bind:value on:change={modifyTextarea} class="textarea" id={position.toString()}
+  ></textarea>
 </div>
 
 <style lang="postcss">
@@ -28,7 +29,7 @@
 
   pre,
   textarea {
-    @apply p-2 border border-gray-200 box-border leading-5 overflow-hidden;
+    @apply p-2 border border-gray-200 box-border leading-5 overflow-hidden min-h-min;
     font-family: inherit;
   }
 

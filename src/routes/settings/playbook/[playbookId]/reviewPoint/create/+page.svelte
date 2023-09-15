@@ -4,7 +4,7 @@
 
   export let data: PageData;
   export let form: ActionData;
-  const title = 'Create Rule';
+  const title = 'Create ReviewPoint';
   const missing = form?.missing ?? false;
   const redirectUrl = `/settings?playbookId=${data.playbookId}`;
 </script>

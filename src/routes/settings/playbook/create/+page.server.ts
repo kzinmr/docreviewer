@@ -22,7 +22,7 @@ export const actions = {
         description
       }
     });
-    // TODO: redirect to the page to add rules
+    // TODO: redirect to the page to add reviewPoints
     throw redirect(303, '/settings');
   }
 } satisfies Actions;

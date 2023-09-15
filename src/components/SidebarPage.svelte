@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icons from '$components/Icons.svelte';
   let sidebarWidth = 'w-full';
   let sidebar: HTMLDivElement;
   let resizer: HTMLDivElement;
@@ -29,7 +30,7 @@
 <div class="drawer relative">
   <div class="drawer-content items-start justify-start pt-4 h-screen overflow-y-auto">
     {#if !isSidebarVisible}
-      <button on:click={toggleSidebar} class="btn btn-primary absolute top-0 z-10">{'>>'}</button>
+      <button on:click={toggleSidebar} class="btn btn-primary absolute top-0 z-10"><Icons type='open-left-panel' /></button>
     {/if}
     <!-- Page content here -->
     <slot name="page-content" />
@@ -37,9 +38,9 @@
   <div bind:this={sidebar} class="sidebar-container">
     {#if isSidebarVisible}
       <div
-        class="drawer-overlay {sidebarWidth} h-screen bg-base-200 text-base-content relative overflow-y-auto"
+        class="drawer-overlay {sidebarWidth} bg-base-200 text-base-content relative h-screen overflow-y-auto"
       >
-        <button on:click={toggleSidebar} class="btn btn-square" tabindex="0">{'<<'}</button>
+        <button on:click={toggleSidebar} class="btn btn-square" tabindex="0"><Icons type='close-left-panel' /></button>
         <!-- Sidebar content here -->
         <slot name="sidebar-content" />
       </div>

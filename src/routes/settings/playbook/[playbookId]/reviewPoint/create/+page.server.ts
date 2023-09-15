@@ -27,7 +27,7 @@ export const actions = {
       return fail(400, { incorrect: true });
     }
 
-    await prisma.rule.create({
+    await prisma.reviewPoint.create({
       data: {
         name,
         description,

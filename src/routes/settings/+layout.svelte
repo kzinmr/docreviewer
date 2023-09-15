@@ -15,7 +15,7 @@
 </script>
 
 <SidebarPage>
-  <div slot="sidebar-content">
+  <svelte:fragment slot="sidebar-content">
     <h1>Playbooks</h1>
     <a href="/settings/playbook/create" class="btn btn-square btn-ghost"><Icons type="plus" /></a>
     <ul class="menu p-4 overflow-y-auto">
@@ -33,8 +33,8 @@
         </li>
       {/each}
     </ul>
-  </div>
-  <div slot="page-content">
+  </svelte:fragment>
+  <svelte:fragment slot="page-content">
     <slot />
-  </div>
+  </svelte:fragment>
 </SidebarPage>

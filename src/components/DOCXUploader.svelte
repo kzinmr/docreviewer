@@ -1,13 +1,11 @@
 <script lang="ts">
+  import { paragraphs, pdfDoc, orgDocxContent, clearAll } from '$/store';
   import JSZip from 'jszip';
   import * as pdfjsLib from 'pdfjs-dist';
-  import { paragraphs, pdfDoc, orgDocxContent, clearAll } from '$/store';
-  import { generateUUID } from '$lib/utils/uuid';
-
+  import type { PDFDocumentProxy } from 'pdfjs-dist';
+  // ssr = false; が必要
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
-  const _mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-  // console.log(pdfjsLib.GlobalWorkerOptions);
 
   export let redirectCallback: (() => void) | null = null;
 
@@ -16,7 +14,6 @@
     // Reset stores when files are changed
     clearAll();
   }
-  let uuidFileName: string;
 
   const loadFile = async (file: File) => {
     return new Promise<ArrayBuffer>((resolve) => {
@@ -38,7 +35,7 @@
       $orgDocxContent = content;
       $paragraphs = await parseDOCXParagraphs(content);
       // for rendering docx as pdf with pages and styles
-      await convertToPdf(file);
+      $pdfDoc = await convertToPdf(file);
     }
 
     if (redirectCallback !== null) {
@@ -74,33 +71,23 @@
     return paragraphs;
   }
 
-  async function convertToPdf(file: File) {
-    const gotenberg_domain = 'http://localhost:8080/gotenberg';
-
-    const uuid = generateUUID();
-    const fileExtension = file.name.split('.').pop();
-    uuidFileName = `${uuid}.${fileExtension}`;
-    const blobUpload = new Blob([file], { type: file.type });
-
+  export async function convertToPdf(file: File): Promise<PDFDocumentProxy> {
     const formData = new FormData();
-    formData.append('file', blobUpload, uuidFileName);
+    const blobUpload = new Blob([file], { type: file.type });
+    formData.append('file', blobUpload);
 
-    try {
-      const response = await fetch(`${gotenberg_domain}/forms/libreoffice/convert`, {
-        method: 'POST',
-        body: formData
-      });
+    const res = await fetch('/api/docx/convert', {
+      method: 'POST',
+      body: formData
+    });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const blob = await response.blob();
-      const content = new Uint8Array(await blob.arrayBuffer());
-      $pdfDoc = await pdfjsLib.getDocument({ data: content }).promise;
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
+    if (!res.ok) {
+      throw new Error('Network response was not ok');
     }
+
+    const blob = await res.blob();
+    const content = new Uint8Array(await blob.arrayBuffer());
+    return await pdfjsLib.getDocument({ data: content }).promise;
   }
 </script>
 

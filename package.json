@@ -44,6 +44,7 @@
     "@prisma/client": "^5.2.0",
     "docxyz": "^0.2.4",
     "jszip": "^3.10.1",
+    "lucide-svelte": "^0.277.0",
     "pdfjs-dist": "^3.10.111"
   },
   "prisma": {

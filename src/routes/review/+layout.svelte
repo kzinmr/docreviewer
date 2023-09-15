@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { error } from '@sveltejs/kit';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
-  import { error } from '@sveltejs/kit';
   import type { LayoutData } from './$types';
   import Icons from '$/components/Icons.svelte';
   import SidebarPage from '$/components/SidebarPage.svelte';
+  import { selectedPlaybookId, reviews } from '$/store';
 
   export let data: LayoutData;
   if (!data) {
@@ -19,19 +20,28 @@
       message: 'Invalid playbookId'
     });
   }
-  let selectedPlaybookId: number = Number(playbookIdStrUrl);
-  $: if (selectedPlaybookId !== Number(playbookIdStrUrl)) {
-    goto(`/review?playbookId=${selectedPlaybookId}`);
+  let selectedPlaybookIdLayout: number = Number(playbookIdStrUrl);
+  $selectedPlaybookId = selectedPlaybookIdLayout;
+  $: if (selectedPlaybookIdLayout !== Number(playbookIdStrUrl)) {
+    $selectedPlaybookId = selectedPlaybookIdLayout;
+    goto(`/review?playbookId=${selectedPlaybookIdLayout}`);
+  }
+
+  let anchor: HTMLAnchorElement;
+  function scrollIntoView() {
+    const el = document.getElementById(anchor.href);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 </script>
 
 <SidebarPage>
-  <div slot="sidebar-content">
+  <svelte:fragment slot="sidebar-content">
     <div class="collapse collapse-arrow bg-base-200">
-      <input type="radio" name="my-accordion-2" />
+      <input type="radio" name="my-accordion-2" checked />
       <div class="collapse-title text-xl font-medium">Playbook</div>
       <div class="collapse-content">
-        <select bind:value={selectedPlaybookId} class="select w-full max-w-xs">
+        <select bind:value={selectedPlaybookIdLayout} class="select w-full max-w-xs">
           {#each data.playbooks as playbook}
             {#if playbook.id === data.playbook?.id}
               <option disabled selected value={playbook.id}>{playbook.name}</option>
@@ -43,45 +53,53 @@
         <a href="/settings?playbookId={selectedPlaybookId}" class="btn btn-square btn-ghost">
           <Icons type="edit" />
         </a>
+        <div class="collapse collapse-arrow bg-base-200">
+          <input type="radio" name="my-accordion-3" />
+          <div class="collapse-title text-xl font-medium">ReviewPoints</div>
+          <div class="collapse-content">
+            {#if data.playbook?.reviewPoints !== undefined}
+              <ul class="menu p-4 overflow-y-auto">
+                {#each data.playbook?.reviewPoints as reviewPoint}
+                  <a href="/settings?playbookId={selectedPlaybookId}" class="btn m-1 btn-ghost">
+                    {reviewPoint.name}
+                  </a>
+                {/each}
+              </ul>
+            {/if}
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="collapse collapse-arrow bg-base-200">
       <input type="radio" name="my-accordion-2" />
-      <div class="collapse-title text-xl font-medium">Review Rules</div>
-      <div class="collapse-content">
-        {#if data.playbook?.rules !== undefined}
-          <ul class="menu p-4 overflow-y-auto">
-            {#each data.playbook?.rules as rule}
-              <a href="/settings?playbookId={selectedPlaybookId}" class="btn m-1 btn-ghost">
-                {rule.name}
-              </a>
-            {/each}
-          </ul>
-        {/if}
-      </div>
-    </div>
-    <div class="collapse collapse-arrow bg-base-200">
-      <input type="radio" name="my-accordion-2" checked />
       <div class="collapse-title text-xl font-medium">Review Results</div>
       <div class="collapse-content">
         <div class="collapse collapse-arrow bg-base-200">
-          <input type="radio" name="my-accordion-3" checked />
+          <input type="radio" name="my-accordion-3" />
           <div class="collapse-title text-lg font-small">To Be Reviewed</div>
           <div class="collapse-content">
-            <p>blank</p>
-          </div>
-        </div>
-        <div class="collapse collapse-arrow bg-base-200">
-          <input type="radio" name="my-accordion-3" />
-          <div class="collapse-title text-lg font-small">Ignored</div>
-          <div class="collapse-content">
-            <p>blank</p>
+            {#if $reviews !== undefined && $reviews.length > 0}
+              <ul class="menu p-4 overflow-y-auto">
+                {#each $reviews as review}
+                  <a
+                    href={`passage-${review.targetPassageId}`}
+                    bind:this={anchor}
+                    on:click|preventDefault={scrollIntoView}
+                    class="btn m-1 btn-ghost">ReviewPoint: {review.reviewPoint.name}</a
+                  >
+                  <p>{review.reviewPoint.description}</p>
+                {/each}
+              </ul>
+            {:else}
+              <p>No Review Results</p>
+            {/if}
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div slot="page-content">
+  </svelte:fragment>
+  <svelte:fragment slot="page-content">
     <slot />
-  </div>
+  </svelte:fragment>
 </SidebarPage>
