@@ -58,15 +58,12 @@ function applyOperations(content: ArrayBuffer, operations: Array<Operation>, sav
 // Simply write the received binary data to the file
 export const POST: RequestHandler = async ({ request }) => {
   const saveTo = join(tmpdir(), 'testFile');
-  console.log(saveTo); // TODO: should remove this?
 
   const form = await request.formData();
-  console.log(form);
   const blob = form.get('file') as Blob | null;
   const content = await blob?.arrayBuffer();
   const operationsStr = form.get('operations') as string;
   const operations = await JSON.parse(operationsStr);
-  console.log(operations);
 
   if (!(content instanceof ArrayBuffer) || new Uint8Array(content).length === 0) {
     throw error(400, 'Invalid request body');

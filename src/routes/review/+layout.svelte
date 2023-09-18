@@ -3,6 +3,8 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import type { LayoutData } from './$types';
+  import DocumentOperations from '$/components/DocumentOperations.svelte';
+  import DocumentReviewButton from '$components/DocumentReviewButton.svelte';
   import Icons from '$/components/Icons.svelte';
   import SidebarPage from '$/components/SidebarPage.svelte';
   import { selectedPlaybookId, reviews } from '$/store';
@@ -27,19 +29,21 @@
     goto(`/review?playbookId=${selectedPlaybookIdLayout}`);
   }
 
-  let anchor: HTMLAnchorElement;
-  function scrollIntoView() {
-    const el = document.getElementById(anchor.href);
+  function jumpToPassage(passageId: string) {
+    const el = document.getElementById(passageId);
     if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth' });
+    el.scrollIntoView({ behavior: 'smooth', block: "center", inline: "nearest" });
   }
 </script>
 
 <SidebarPage>
   <svelte:fragment slot="sidebar-content">
+    <div class="flex flex-row space-x-1 absolute top-12 z-10 bg-base-200">
+      <DocumentOperations />
+    </div>
     <div class="collapse collapse-arrow bg-base-200">
       <input type="radio" name="my-accordion-2" checked />
-      <div class="collapse-title text-xl font-medium">Playbook</div>
+      <div class="collapse-title text-xl font-medium mt-10">Playbook</div>
       <div class="collapse-content">
         <select bind:value={selectedPlaybookIdLayout} class="select w-full max-w-xs">
           {#each data.playbooks as playbook}
@@ -50,6 +54,7 @@
             {/if}
           {/each}
         </select>
+        <DocumentReviewButton />
         <a href="/settings?playbookId={selectedPlaybookId}" class="btn btn-square btn-ghost">
           <Icons type="edit" />
         </a>
@@ -82,12 +87,13 @@
             {#if $reviews !== undefined && $reviews.length > 0}
               <ul class="menu p-4 overflow-y-auto">
                 {#each $reviews as review}
-                  <a
-                    href={`passage-${review.targetPassageId}`}
-                    bind:this={anchor}
-                    on:click|preventDefault={scrollIntoView}
-                    class="btn m-1 btn-ghost">ReviewPoint: {review.reviewPoint.name}</a
+                  <div
+                    on:click|preventDefault={() =>
+                      jumpToPassage(`passage-${review.targetPassageId}`)}
+                    class="btn m-1 btn-ghost"
                   >
+                    ReviewPoint: {review.reviewPoint.name}
+                  </div>
                   <p>{review.reviewPoint.description}</p>
                 {/each}
               </ul>

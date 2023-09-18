@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { paragraphs, pdfDoc, orgDocxContent, clearAll } from '$/store';
+  import { paragraphs, docxBlob, selectedDocumentId, clearAll } from '$/store';
   import JSZip from 'jszip';
-  import * as pdfjsLib from 'pdfjs-dist';
-  import type { PDFDocumentProxy } from 'pdfjs-dist';
-  // ssr = false; が必要
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js';
 
   export let redirectCallback: (() => void) | null = null;
 
@@ -31,11 +26,10 @@
   async function loadDOCX() {
     if (files !== null) {
       const file: File = Array.from(files)[0];
+      $docxBlob = new Blob([file], { type: file.type });
       const content = await loadFile(file);
-      $orgDocxContent = content;
       $paragraphs = await parseDOCXParagraphs(content);
-      // for rendering docx as pdf with pages and styles
-      $pdfDoc = await convertToPdf(file);
+      $selectedDocumentId = await registerDocument($paragraphs);
     }
 
     if (redirectCallback !== null) {
@@ -71,24 +65,32 @@
     return paragraphs;
   }
 
-  export async function convertToPdf(file: File): Promise<PDFDocumentProxy> {
-    const formData = new FormData();
-    const blobUpload = new Blob([file], { type: file.type });
-    formData.append('file', blobUpload);
-
-    const res = await fetch('/api/docx/convert', {
+  const registerDocument = async (lines: string[]): Promise<number | null> => {
+    // TODO: docxのparagraphs と lines の暗黙の対応関係が妥当かどうかは要検討
+    const resAnalyze = await fetch('/api/analyze', {
       method: 'POST',
-      body: formData
+      body: JSON.stringify({ lines }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
-
-    if (!res.ok) {
-      throw new Error('Network response was not ok');
+    if (!resAnalyze.ok) {
+      return null;
     }
 
-    const blob = await res.blob();
-    const content = new Uint8Array(await blob.arrayBuffer());
-    return await pdfjsLib.getDocument({ data: content }).promise;
-  }
+    const resObj: { passages: string[][] } = await resAnalyze.json();
+    const passages = resObj['passages'];
+
+    const res = await fetch('/api/document', {
+      method: 'POST',
+      body: JSON.stringify({ passages }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return (await res.json())['id'];
+  };
+
 </script>
 
 <div class="upload-container">

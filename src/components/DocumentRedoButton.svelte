@@ -4,7 +4,7 @@
   import type { Operation } from '$/lib/types';
 
   const redoOperation = () => {
-    console.log('redo: ', $operationDequeue, $operationUndoDequeue);
+    // console.log('redo: ', $operationDequeue, $operationUndoDequeue);
     const operation: Operation | undefined = $operationUndoDequeue.dequeue();
     if (operation !== undefined) {
       $operationDequeue.enqueue(operation);
@@ -30,8 +30,8 @@
           break;
       }
     }
-    console.log('redo: ', $operationDequeue, $operationUndoDequeue);
+    // console.log('redo: ', $operationDequeue, $operationUndoDequeue);
   };
 </script>
 
-<button on:click={redoOperation}><Icons type="redo" /></button>
+<button class="btn btn-square" on:click={redoOperation}><Icons type="redo" /></button>

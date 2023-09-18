@@ -4,9 +4,8 @@
   import type { Operation } from '$/lib/types';
 
   const undoOperation = () => {
-    console.log('undo: ', $operationDequeue, $operationUndoDequeue);
+    // console.log('undo: ', $operationDequeue, $operationUndoDequeue);
     const operation: Operation | undefined = $operationDequeue.pop();
-    console.log(operation);
     if (operation !== undefined) {
       $operationUndoDequeue.enqueueLeft(operation);
       switch (operation.type) {
@@ -31,8 +30,8 @@
           break;
       }
     }
-    console.log('undo: ', $operationDequeue, $operationUndoDequeue);
+    // console.log('undo: ', $operationDequeue, $operationUndoDequeue);
   };
 </script>
 
-<button on:click={undoOperation}><Icons type="undo" /></button>
+<button class="btn btn-square" on:click={undoOperation}><Icons type="undo" /></button>

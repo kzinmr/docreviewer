@@ -1,5 +1,4 @@
 <script lang="ts">
-  import DocumentOperations from '$/components/DocumentOperations.svelte';
   import ParagraphOperations from '$/components/ParagraphOperations.svelte';
   import { paragraphs, previousParagraphs, selectedDocumentId } from '$/store';
   import type { Document, Passage } from '$/lib/types';
@@ -22,14 +21,11 @@
 
 {#if $paragraphs.length > 0}
   <div class="textarea-frame">
-    <div class="flex flex-row space-x-1 absolute top-14 z-10 bg-white">
-      <DocumentOperations />
-    </div>
     <div class="flex flex-col p-8 space-y-4">
       {#if $selectedDocumentId !== null}
         {#each passages as passage, i}
           <!-- id enables to jump to here by clicking sidebar -->
-          <div id={`passage-${passage.id}`}>
+          <div id={`passage-${passage.id}`} class="grid card bg-base-300 rounded-box p-2">
             {#each passage.lines as line, j}
               <ParagraphOperations
                 bind:paragraph={line.text}
@@ -37,7 +33,7 @@
               />
             {/each}
           </div>
-          <div class="border-t-2 border-gray-800 my-2" />
+          <div class="divider" />
         {/each}
       {:else}
         {#each $paragraphs as paragraph, position}

@@ -21,9 +21,9 @@
 
       const reviewSessionFull: ReviewSessionFull = await res.json();
       $reviews = reviewSessionFull.reviews;
-      console.log('reviews: ', $reviews);
+      // console.log('reviews: ', $reviews);
     }
   };
 </script>
 
-<button on:click={reviewPassages}><Icons type="review" /></button>
+<button class="btn btn-square" on:click={reviewPassages}><Icons type="review" /></button>
