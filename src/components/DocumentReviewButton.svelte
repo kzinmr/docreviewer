@@ -26,4 +26,4 @@
   };
 </script>
 
-<button class="btn btn-square" on:click={reviewPassages}><Icons type="review" /></button>
+<button class="btn-icon variant-filled" on:click={reviewPassages}><Icons type="review" /></button>

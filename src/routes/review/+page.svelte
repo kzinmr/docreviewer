@@ -20,20 +20,23 @@
 </script>
 
 {#if $paragraphs.length > 0}
-  <div class="textarea-frame">
+  <div class="p-4 border rounded">
     <div class="flex flex-col p-8 space-y-4">
       {#if $selectedDocumentId !== null}
         {#each passages as passage, i}
           <!-- id enables to jump to here by clicking sidebar -->
-          <div id={`passage-${passage.id}`} class="grid card bg-base-300 rounded-box p-2">
-            {#each passage.lines as line, j}
-              <ParagraphOperations
-                bind:paragraph={line.text}
-                position={j + passages.slice(0, i).reduce((acc, p) => acc + p.lines.length, 0)}
-              />
-            {/each}
+          <div id={`passage-${passage.id}`}>
+            <!-- To adjust page header, set m-6 -->
+            <hr class="!border-dotted m-6" />
+            <div class="card p-2 bg-base-300 rounded-box">
+              {#each passage.lines as line, j}
+                <ParagraphOperations
+                  bind:paragraph={line.text}
+                  position={j + passages.slice(0, i).reduce((acc, p) => acc + p.lines.length, 0)}
+                />
+              {/each}
+            </div>
           </div>
-          <div class="divider" />
         {/each}
       {:else}
         {#each $paragraphs as paragraph, position}
@@ -43,9 +46,3 @@
     </div>
   </div>
 {/if}
-
-<style lang="postcss">
-  .textarea-frame {
-    @apply p-4 border rounded;
-  }
-</style>

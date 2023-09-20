@@ -15,4 +15,6 @@
   };
 </script>
 
-<button on:click={deleteTextarea}><Icons type="minus" /></button>
+<button on:click={deleteTextarea} class="btn-icon">
+  <Icons type="minus" />
+</button>

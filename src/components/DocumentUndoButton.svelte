@@ -34,4 +34,4 @@
   };
 </script>
 
-<button class="btn btn-square" on:click={undoOperation}><Icons type="undo" /></button>
+<button class="btn-icon variant-filled" on:click={undoOperation}><Icons type="undo" /></button>

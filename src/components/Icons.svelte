@@ -10,10 +10,16 @@
     Save,
     Eye,
     Download,
+    Upload,
     Play,
     FileCheck,
     PanelLeftClose,
-    PanelLeftOpen
+    PanelLeftOpen,
+    PanelRightClose,
+    PanelRightOpen,
+    BookOpen,
+    CheckCheck,
+    ListTodo
   } from 'lucide-svelte';
   export let type: string;
 </script>
@@ -25,7 +31,11 @@
     <PanelLeftOpen />
   {:else if type === 'close-left-panel'}
     <PanelLeftClose />
-  {:else if type === 'close'}  
+  {:else if type === 'open-right-panel'}
+    <PanelRightOpen />
+  {:else if type === 'close-right-panel'}
+    <PanelRightClose />
+  {:else if type === 'close'}
     <X />
   {:else if type === 'plus'}
     <Plus />
@@ -43,9 +53,17 @@
     <Eye />
   {:else if type == 'download'}
     <Download />
+  {:else if type == 'upload'}
+    <Upload />
   {:else if type === 'analyze'}
     <Play />
   {:else if type === 'review'}
     <FileCheck />
+  {:else if type === 'playbook'}
+    <BookOpen />
+  {:else if type === 'reviewpoint'}
+    <CheckCheck />
+    {:else if type === 'reviewresult'}
+    <ListTodo />
   {/if}
 </div>

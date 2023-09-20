@@ -22,9 +22,9 @@ With DB and PDF converter:
 docker-compose up
 ```
 
-NOTE: Comment-out `adapter-node` in `svelte.config.js`
+NOTE: Comment-out `adapter-node` in `svelte.config.ts`
 
-NOTE: You need to access via `http://localhost:5173` not `https`. This is because [environment variable of adapter-node](https://kit.svelte.dev/docs/adapter-node#environment-variables-origin-protocolheader-and-hostheader) enables cross-origin request. See `package.json`.
+NOTE: You need to access via `http://localhost:5174` not `https`. This is because [environment variable of adapter-node](https://kit.svelte.dev/docs/adapter-node#environment-variables-origin-protocolheader-and-hostheader) enables cross-origin request. See `package.json`.
 
 ## Building
 

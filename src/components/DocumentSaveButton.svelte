@@ -26,4 +26,4 @@
   };
 </script>
 
-<button class="btn btn-square" on:click={postDocx}><Icons type="save" /></button>
+<button class="btn-icon variant-filled" on:click={postDocx}><Icons type="save" /></button>

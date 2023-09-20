@@ -15,4 +15,6 @@
   };
 </script>
 
-<button on:click={insertTextarea}><Icons type="plus" /></button>
+<button on:click={insertTextarea} class="btn-icon">
+  <Icons type="plus" />
+</button>

@@ -3,6 +3,14 @@
 
   export let value = '';
   export let position: number;
+  let lineHeight = 'leading-3';
+  $: if (value.length > 100) {
+    lineHeight = 'p-2 leading-normal resize-y';
+  } else if (value.length > 2) {
+    lineHeight = 'p-2 leading-tight resize-y';
+  } else {
+    lineHeight = 'leading-3 resize-none';
+  }
 
   const modifyTextarea = () => {
     // console.log(`${$previousParagraphs[position]} -> ${value}`);
@@ -16,24 +24,11 @@
   };
 </script>
 
-<div class="container">
-  <pre aria-hidden="true">{value}</pre>
-  <textarea bind:value on:change={modifyTextarea} class="textarea" id={position.toString()}
-  ></textarea>
+<div class="container flex flex-col justify-center">
+  <textarea
+    bind:value
+    on:change={modifyTextarea}
+    class="textarea {lineHeight} overflow-y-auto border-gray-200"
+    id={position.toString()}
+  />
 </div>
-
-<style lang="postcss">
-  .container {
-    position: relative;
-  }
-
-  pre,
-  textarea {
-    @apply p-2 border border-gray-200 box-border leading-5 overflow-hidden min-h-min;
-    font-family: inherit;
-  }
-
-  textarea {
-    @apply absolute w-full h-full top-0 resize-none overflow-y-auto;
-  }
-</style>

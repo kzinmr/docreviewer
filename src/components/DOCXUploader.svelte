@@ -1,13 +1,30 @@
 <script lang="ts">
+  import { FileDropzone } from '@skeletonlabs/skeleton';
   import { paragraphs, docxBlob, selectedDocumentId, clearAll } from '$/store';
   import JSZip from 'jszip';
+  import Icons from '$/components/Icons.svelte';
 
   export let redirectCallback: (() => void) | null = null;
 
-  let files: FileList | null = null;
-  $: if (files) {
-    // Reset stores when files are changed
-    clearAll();
+  let files: FileList;
+  let message = 'Select File';
+
+  $: if (files) message = files[0].name;
+
+  async function onClickHandler() {
+    if (files !== null) {
+      clearAll();
+      const file: File = Array.from(files)[0];
+      $docxBlob = new Blob([file], { type: file.type });
+      const content = await loadFile(file);
+      $paragraphs = await parseDOCXParagraphs(content);
+      $selectedDocumentId = await registerDocument($paragraphs);
+    }
+    // TODO: detect playbook automatically
+
+    if (redirectCallback !== null) {
+      redirectCallback();
+    }
   }
 
   const loadFile = async (file: File) => {
@@ -22,20 +39,6 @@
       reader.readAsArrayBuffer(file);
     });
   };
-
-  async function loadDOCX() {
-    if (files !== null) {
-      const file: File = Array.from(files)[0];
-      $docxBlob = new Blob([file], { type: file.type });
-      const content = await loadFile(file);
-      $paragraphs = await parseDOCXParagraphs(content);
-      $selectedDocumentId = await registerDocument($paragraphs);
-    }
-
-    if (redirectCallback !== null) {
-      redirectCallback();
-    }
-  }
 
   async function parseDOCXParagraphs(zipData: ArrayBuffer) {
     const paragraphs: string[] = [];
@@ -90,29 +93,20 @@
     });
     return (await res.json())['id'];
   };
-
 </script>
 
-<div class="upload-container">
-  <label class="block text-gray-700 text-sm font-bold mb-2" for="file">Select .docx File:</label>
-  <div class="file-input-container">
-    <input
-      type="file"
-      bind:files
-      id="fileInput"
-      class="file-input file-input-ghost w-full max-w invalid:bg-slate-50 valid:bg-slate-100"
-      required
-      accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    />
-  </div>
-  <button disabled={!files} on:click={loadDOCX} class="btn btn-block">upload</button>
+<div class="flex flex-col m-10">
+  <FileDropzone
+    bind:files
+    name="files"
+    accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    slotLead="flex justify-center"
+  >
+    <svelte:fragment slot="lead"><Icons type="upload" /></svelte:fragment>
+    <svelte:fragment slot="message">{message}</svelte:fragment>
+    <svelte:fragment slot="meta">.docx allowed.</svelte:fragment>
+  </FileDropzone>
+  <button type="button" disabled={!files} on:click={onClickHandler} class="btn variant-filled m-4"
+    >Upload</button
+  >
 </div>
-
-<style lang="postcss">
-  .upload-container {
-    @apply w-2/3 p-4 border rounded m-auto;
-  }
-  .file-input-container {
-    @apply flex justify-between items-center p-1 border-dashed border-2 rounded bg-slate-50;
-  }
-</style>

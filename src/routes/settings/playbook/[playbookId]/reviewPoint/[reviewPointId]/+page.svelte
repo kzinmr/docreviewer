@@ -10,20 +10,11 @@
   const redirectUrl = `/settings?playbookId=${playbookId}`;
   const updateAction = '?/updateReviewPoint';
   const deleteAction = '?/deleteReviewPoint';
-  const confirmationMassage = 'Will you really DELETE this reviewPoint?';
-  const my_modal_1: HTMLDialogElement | null = null;
+  const confirmationMassage = 'Will you really DELETE this ReviewPoint?';
 </script>
 
-<EditForm
-  {title}
-  {missing}
-  {redirectUrl}
-  {updateAction}
-  {deleteAction}
-  {confirmationMassage}
-  {my_modal_1}
->
-  <div>
+<EditForm {title} {missing} {redirectUrl} {updateAction} {deleteAction} {confirmationMassage}>
+  <svelte:fragment>
     <h2>Name</h2>
     <input name="name" placeholder="Name" type="text" value={form?.name ?? reviewPoint?.name} />
     <h2>Description</h2>
@@ -44,7 +35,7 @@
       type="text"
       value={form?.type ?? reviewPoint?.logic?.type}
     />
-  </div>
+  </svelte:fragment>
 </EditForm>
 
 <style lang="postcss">

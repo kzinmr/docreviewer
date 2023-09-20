@@ -15,12 +15,12 @@ COPY prisma ./prisma
 RUN npx prisma generate
 
 # Copy other necessary files and build
-COPY tsconfig.json vite.config.ts svelte.config.js tailwind.config.js postcss.config.js ./
+COPY tsconfig.json vite.config.ts svelte.config.js tailwind.config.ts postcss.config.js ./
 COPY src ./src
 COPY static ./static
 RUN npm run build
 
-EXPOSE 5173
+EXPOSE 5174
 CMD ["npm", "run", "start:dev"]
 
 # # Production stage
@@ -34,5 +34,5 @@ CMD ["npm", "run", "start:dev"]
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/prisma ./prisma
 
-# EXPOSE 5173
+# EXPOSE 5174
 # CMD ["npm", "run", "start:dev"]

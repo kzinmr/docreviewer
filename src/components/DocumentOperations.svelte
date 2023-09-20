@@ -12,7 +12,7 @@
   // review: apply review points in the selected playbook to the document
 </script>
 
-<div>
+<div class="flex flex-row">
   <DocumentUndoButton />
   <DocumentRedoButton />
   <DocumentSaveButton />

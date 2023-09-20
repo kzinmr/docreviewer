@@ -35,7 +35,8 @@ export const actions = {
   },
   deletePlaybook: async ({ params: { playbookId } }) => {
     await prisma.playbook.delete({
-      where: { id: Number(playbookId) }
+      where: { id: Number(playbookId) },
+      include: { reviewPoints: true, knowledges: true }
     });
 
     throw redirect(303, '/settings');

@@ -37,20 +37,12 @@
 </script>
 
 <div class="flex flex-row">
-  <canvas bind:this={canvasRef} id={`canvas-${idx}`} class="w-full h-full" />
-  <div class="flex flex-col">
-    <textarea
-      class="w-full h-full"
-      id={`text-${idx}`}
-      placeholder="Page text"
-      bind:value={pageText}
-    />
-  </div>
+  <canvas bind:this={canvasRef} id={`canvas-${idx}`} class="w-3/4 h-full" />
+  <textarea
+    class="w-full leading-tight"
+    id="text-{idx}"
+    placeholder="Page text"
+    bind:value={pageText}
+  />
 </div>
-
-<style>
-  canvas {
-    width: 50%;
-    height: 100%;
-  }
-</style>
+<hr class="!border-t-2 m-2" />

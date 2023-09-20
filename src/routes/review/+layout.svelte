@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { AppShell } from '@skeletonlabs/skeleton';
+  import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
   import { error } from '@sveltejs/kit';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
@@ -6,7 +8,7 @@
   import DocumentOperations from '$/components/DocumentOperations.svelte';
   import DocumentReviewButton from '$components/DocumentReviewButton.svelte';
   import Icons from '$/components/Icons.svelte';
-  import SidebarPage from '$/components/SidebarPage.svelte';
+  import Header from '$/components/Header.svelte';
   import { selectedPlaybookId, reviews } from '$/store';
 
   export let data: LayoutData;
@@ -32,80 +34,103 @@
   function jumpToPassage(passageId: string) {
     const el = document.getElementById(passageId);
     if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: "center", inline: "nearest" });
+    el.scrollIntoView();
+  }
+
+  let sidebarWidth = 'w-fit';
+  let isSidebarVisible = true;
+  let hideSidebar = '';
+  function toggleSidebar() {
+    isSidebarVisible = !isSidebarVisible;
+    hideSidebar = hideSidebar === 'hidden' ? '' : 'hidden';
   }
 </script>
 
-<SidebarPage>
-  <svelte:fragment slot="sidebar-content">
-    <div class="flex flex-row space-x-1 absolute top-12 z-10 bg-base-200">
-      <DocumentOperations />
-    </div>
-    <div class="collapse collapse-arrow bg-base-200">
-      <input type="radio" name="my-accordion-2" checked />
-      <div class="collapse-title text-xl font-medium mt-10">Playbook</div>
-      <div class="collapse-content">
-        <select bind:value={selectedPlaybookIdLayout} class="select w-full max-w-xs">
-          {#each data.playbooks as playbook}
-            {#if playbook.id === data.playbook?.id}
-              <option disabled selected value={playbook.id}>{playbook.name}</option>
-            {:else}
-              <option value={playbook.id}>{playbook.name}</option>
-            {/if}
-          {/each}
-        </select>
-        <DocumentReviewButton />
-        <a href="/settings?playbookId={selectedPlaybookId}" class="btn btn-square btn-ghost">
-          <Icons type="edit" />
-        </a>
-        <div class="collapse collapse-arrow bg-base-200">
-          <input type="radio" name="my-accordion-3" />
-          <div class="collapse-title text-xl font-medium">ReviewPoints</div>
-          <div class="collapse-content">
-            {#if data.playbook?.reviewPoints !== undefined}
-              <ul class="menu p-4 overflow-y-auto">
-                {#each data.playbook?.reviewPoints as reviewPoint}
-                  <a href="/settings?playbookId={selectedPlaybookId}" class="btn m-1 btn-ghost">
-                    {reviewPoint.name}
-                  </a>
-                {/each}
-              </ul>
-            {/if}
-          </div>
-        </div>
-      </div>
-    </div>
+<AppShell
+  slotsidebarRight="bg-surface-500/5 p-4 {sidebarWidth} {hideSidebar}"
+  slotPageHeader="sticky top-0 z-50"
+>
+  <svelte:fragment slot="header">
+    <Header />
+  </svelte:fragment>
 
-    <div class="collapse collapse-arrow bg-base-200">
-      <input type="radio" name="my-accordion-2" />
-      <div class="collapse-title text-xl font-medium">Review Results</div>
-      <div class="collapse-content">
-        <div class="collapse collapse-arrow bg-base-200">
-          <input type="radio" name="my-accordion-3" />
-          <div class="collapse-title text-lg font-small">To Be Reviewed</div>
-          <div class="collapse-content">
-            {#if $reviews !== undefined && $reviews.length > 0}
-              <ul class="menu p-4 overflow-y-auto">
-                {#each $reviews as review}
-                  <div
-                    on:click|preventDefault={() =>
-                      jumpToPassage(`passage-${review.targetPassageId}`)}
-                    class="btn m-1 btn-ghost"
-                  >
-                    ReviewPoint: {review.reviewPoint.name}
-                  </div>
-                  <p>{review.reviewPoint.description}</p>
-                {/each}
-              </ul>
-            {:else}
-              <p>No Review Results</p>
-            {/if}
-          </div>
-        </div>
-      </div>
-    </div>
+  <div slot="sidebarRight" class="flex flex-row h-screen">
+    {#if isSidebarVisible}
+      <nav class="list-nav">
+        <button on:click={toggleSidebar} class="btn" tabindex="0"
+          ><Icons type="close-right-panel" /></button
+        >
+        <Accordion>
+          <AccordionItem open>
+            <svelte:fragment slot="lead"><Icons type="playbook" /></svelte:fragment>
+            <svelte:fragment slot="summary">Playbook</svelte:fragment>
+            <svelte:fragment slot="content">
+              <div class="flex flex-row">
+                <select bind:value={selectedPlaybookIdLayout} class="select max-w-xs break-words">
+                  {#each data.playbooks as playbook}
+                    {#if playbook.id === data.playbook?.id}
+                      <option disabled selected value={playbook.id}>{playbook.name}</option>
+                    {:else}
+                      <option value={playbook.id}>{playbook.name}</option>
+                    {/if}
+                  {/each}
+                </select>
+                <DocumentReviewButton />
+              </div>
+              <a
+                href="/settings?playbookId={selectedPlaybookId}"
+                class="btn-icon"
+                data-sveltekit-preload-data="hover"
+              >
+                <Icons type="edit" />
+              </a>
+            </svelte:fragment>
+          </AccordionItem>
+          <AccordionItem>
+            <svelte:fragment slot="lead"><Icons type="reviewpoint" /></svelte:fragment>
+            <svelte:fragment slot="summary">ReviewPoints</svelte:fragment>
+            <svelte:fragment slot="content">
+              {#if data.playbook?.reviewPoints !== undefined}
+                <ul class="list p-4 overflow-y-auto">
+                  {#each data.playbook?.reviewPoints as reviewPoint}
+                    <li class="max-w-xs break-words">{reviewPoint.name}</li>
+                  {/each}
+                </ul>
+              {/if}
+            </svelte:fragment>
+          </AccordionItem>
+          <AccordionItem>
+            <svelte:fragment slot="lead"><Icons type="reviewresult" /></svelte:fragment>
+            <svelte:fragment slot="summary">Review Results</svelte:fragment>
+            <svelte:fragment slot="content">
+              {#if $reviews !== undefined && $reviews.length > 0}
+                <ul class="p-4 overflow-y-auto">
+                  {#each $reviews as review}
+                    <button
+                      on:click|preventDefault={() =>
+                        jumpToPassage(`passage-${review.targetPassageId}`)}
+                      class="btn m-1"
+                    >
+                      {review.reviewPoint.name}
+                    </button>
+                    <p class="max-w-xs break-words">{review.reviewPoint.description}</p>
+                  {/each}
+                </ul>
+              {/if}
+            </svelte:fragment>
+          </AccordionItem>
+        </Accordion>
+      </nav>
+    {/if}
+  </div>
+
+  <svelte:fragment slot="pageHeader">
+    <DocumentOperations />
+    {#if !isSidebarVisible}
+      <button on:click={toggleSidebar} class="btn absolute top-0 -right-0"
+        ><Icons type="open-right-panel" /></button
+      >
+    {/if}
   </svelte:fragment>
-  <svelte:fragment slot="page-content">
-    <slot />
-  </svelte:fragment>
-</SidebarPage>
+  <slot />
+</AppShell>
